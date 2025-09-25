@@ -25,7 +25,7 @@ class ScalpingEmaRsi(BaseStrategy): # Heredar de BaseStrategy
         agg_levels = {
             1: {"rsi_buy_max": 45, "rsi_sell_min": 55},  # Conservador
             2: {"rsi_buy_max": 48, "rsi_sell_min": 52},
-            3: {"rsi_buy_max": 51, "rsi_sell_min": 49},
+            3: {"rsi_buy_max": 55, "rsi_sell_min": 45},
             4: {"rsi_buy_max": 54, "rsi_sell_min": 46},
             5: {"rsi_buy_max": 57, "rsi_sell_min": 43},  # Intermedio
             6: {"rsi_buy_max": 60, "rsi_sell_min": 40},
@@ -98,16 +98,16 @@ class ScalpingEmaRsi(BaseStrategy): # Heredar de BaseStrategy
             if is_buy_crossover and is_buy_rsi_confirm:
                 entry_price = latest['close']
                 message = f"Cruce alcista de EMAs o RSI ({rsi_latest:.2f} < {self.rsi_buy_max}) confirmado."
-                detailed_status = {
+                detailed_status.update({
                     "ema_fast": ema_fast_latest, "ema_slow": ema_slow_latest,
                     "rsi": rsi_latest, "crossover": "BUY"
-                }
+                })
                 return {
                     "signal": "BUY",
                     "entry": entry_price,
                     "message": message,
-                    "sl_pct": 0.0,
-                    "tp_pct": 0.0,
+                    "sl_pct": sl_pct,
+                    "tp_pct": tp_pct,
                     "detailed_status": detailed_status
                 }
 
@@ -118,16 +118,16 @@ class ScalpingEmaRsi(BaseStrategy): # Heredar de BaseStrategy
             if is_sell_crossover and is_sell_rsi_confirm:
                 entry_price = latest['close']
                 message = f"Cruce bajista de EMAs o RSI ({rsi_latest:.2f} > {self.rsi_sell_min}) confirmado."
-                detailed_status = {
+                detailed_status.update({
                     "ema_fast": ema_fast_latest, "ema_slow": ema_slow_latest,
                     "rsi": rsi_latest, "crossover": "SELL"
-                }
+                })
                 return {
                     "signal": "SELL",
                     "entry": entry_price,
                     "message": message,
-                    "sl_pct": 0.0,
-                    "tp_pct": 0.0,
+                    "sl_pct": sl_pct,
+                    "tp_pct": tp_pct,
                     "detailed_status": detailed_status
                 }
 

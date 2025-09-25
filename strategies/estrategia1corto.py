@@ -16,7 +16,7 @@ class estrategia1corto(BaseStrategy): # Heredar de BaseStrategy
         agg_levels = {
             1: {"rsi_sell": 65, "required_conditions": 4, "adx_threshold": 15},
             2: {"rsi_sell": 62, "required_conditions": 4, "adx_threshold": 15},
-            3: {"rsi_sell": 54, "required_conditions": 3, "adx_threshold": 15},
+            3: {"rsi_sell": 60, "required_conditions": 3, "adx_threshold": 12},
             4: {"rsi_sell": 51, "required_conditions": 4, "adx_threshold": 15},
             5: {"rsi_sell": 48, "required_conditions": 4, "adx_threshold": 15},
             6: {"rsi_sell": 45, "required_conditions": 4, "adx_threshold": 15},

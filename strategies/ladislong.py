@@ -16,7 +16,7 @@ class LadisLong:
         agg_levels = {
             1: {"rsi_min": 35, "rsi_max": 95, "min_atr": 0.3, "volume_multiplier": 0.8},  # Conservador
             2: {"rsi_min": 30, "rsi_max": 90, "min_atr": 0.2, "volume_multiplier": 0.7},
-            3: {"rsi_min": 25, "rsi_max": 85, "min_atr": 0.1, "volume_multiplier": 0.6},
+            3: {"rsi_min": 20, "rsi_max": 90, "min_atr": 0.05, "volume_multiplier": 0.5},
             4: {"rsi_min": 20, "rsi_max": 80, "min_atr": 0.05, "volume_multiplier": 0.5},
             5: {"rsi_min": 15, "rsi_max": 75, "min_atr": 0.01, "volume_multiplier": 0.4},  # Intermedio
             6: {"rsi_min": 10, "rsi_max": 70, "min_atr": 0.01, "volume_multiplier": 0.3},

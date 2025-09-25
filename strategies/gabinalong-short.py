@@ -16,10 +16,19 @@ class GabinalongShort(BaseStrategy): # Heredar de BaseStrategy
         super().__init__(config, aggressiveness_level) # Llamada al constructor de la clase base
         # El resto del código de __init__ se mantiene igual
         agg_levels = {
-            1: {"tolerance": 0.0010}, 5: {"tolerance": 0.0020}, 10: {"tolerance": 0.0030}
+            1: {"tolerance": 0.0010, "volume_multiplier": 1.2},
+            2: {"tolerance": 0.0015, "volume_multiplier": 1.1},
+            3: {"tolerance": 0.0030, "volume_multiplier": 0.8},
+            4: {"tolerance": 0.0035, "volume_multiplier": 0.7},
+            5: {"tolerance": 0.0040, "volume_multiplier": 0.6},
+            6: {"tolerance": 0.0045, "volume_multiplier": 0.5},
+            7: {"tolerance": 0.0050, "volume_multiplier": 0.4},
+            8: {"tolerance": 0.0055, "volume_multiplier": 0.3},
+            9: {"tolerance": 0.0060, "volume_multiplier": 0.2},
+            10: {"tolerance": 0.0065, "volume_multiplier": 0.1}
         }
         level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
-        self.volume_multiplier = config.get("volume_multiplier", 1.0)
+        self.volume_multiplier = config.get("volume_multiplier", level_params["volume_multiplier"])
         self.atr_period = config.get("atr_period", 14)
         self.macd_fast = config.get("macd_fast", 12)
         self.macd_slow = config.get("macd_slow", 26)

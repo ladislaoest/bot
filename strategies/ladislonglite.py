@@ -18,7 +18,7 @@ class LadisLongLite(BaseStrategy): # Heredar de BaseStrategy
         agg_levels = {
             1: {"rsi_min": 35, "rsi_max": 95, "required_conditions": 10, "min_atr": 0.3, "volume_multiplier": 0.8, "min_ema_spread_pct": 0.05},
             2: {"rsi_min": 30, "rsi_max": 90, "required_conditions": 9, "min_atr": 0.2, "volume_multiplier": 0.7, "min_ema_spread_pct": 0.04},
-            3: {"rsi_min": 25, "rsi_max": 85, "required_conditions": 7, "min_atr": 0.1, "volume_multiplier": 0.6, "min_ema_spread_pct": 0.03},
+            3: {"rsi_min": 20, "rsi_max": 90, "required_conditions": 7, "min_atr": 0.05, "volume_multiplier": 0.5, "min_ema_spread_pct": 0.02},
             4: {"rsi_min": 20, "rsi_max": 80, "required_conditions": 8, "min_atr": 0.05, "volume_multiplier": 0.5, "min_ema_spread_pct": 0.02},
             5: {"rsi_min": 15, "rsi_max": 75, "required_conditions": 8, "min_atr": 0.01, "volume_multiplier": 0.4, "min_ema_spread_pct": 0.01},
             6: {"rsi_min": 10, "rsi_max": 70, "required_conditions": 7, "min_atr": 0.01, "volume_multiplier": 0.3, "min_ema_spread_pct": 0.01},

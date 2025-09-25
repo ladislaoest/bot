@@ -31,13 +31,13 @@ class Sabado(BaseStrategy): # Heredar de BaseStrategy
         self.ema_slow_period = config.get('ema_slow_period', 50)
         self.rsi_period = config.get('rsi_period', 14)
         self.volume_ema_period = config.get('volume_ema_period', 20)
-        self.volume_multiplier = config.get('volume_multiplier', 1.5)
-        self.max_atr_threshold = config.get('max_atr_threshold', 0.01)
-        self.min_atr_threshold = config.get('min_atr_threshold', 0.0005)
+        self.volume_multiplier = config.get('volume_multiplier', 1.2)
+        self.max_atr_threshold = config.get('max_atr_threshold', 0.015)
+        self.min_atr_threshold = config.get('min_atr_threshold', 0.0003)
 
 
         # --- Parámetros ajustados por agresividad ---
-        self.rsi_overbought_threshold = config.get('rsi_overbought_threshold', 70) # Ajustado a 70
+        self.rsi_overbought_threshold = config.get('rsi_overbought_threshold', 65) # Ajustado a 65
         self.atr_period = config.get("atr_period", 14) # Añadido
         self.sl_multiplier = config.get("sl_multiplier", 0.8) # Añadido
         self.tp_multiplier = config.get("tp_multiplier", 1.2) # Añadido

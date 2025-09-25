@@ -15,7 +15,7 @@ class SheilashortLite(BaseStrategy): # Heredar de BaseStrategy
         agg_levels = {
             1: {"rsi_sell_max": 60, "required_conditions": 4, "min_atr_value": 0.8, "volume_multiplier": 1.2},
             2: {"rsi_sell_max": 63, "required_conditions": 4, "min_atr_value": 0.7, "volume_multiplier": 1.1},
-            3: {"rsi_sell_max": 66, "required_conditions": 3, "min_atr_value": 0.6, "volume_multiplier": 1.0},
+            3: {"rsi_sell_max": 70, "required_conditions": 3, "min_atr_value": 0.4, "volume_multiplier": 0.8},
             4: {"rsi_sell_max": 69, "required_conditions": 3, "min_atr_value": 0.5, "volume_multiplier": 0.9},
             5: {"rsi_sell_max": 72, "required_conditions": 3, "min_atr_value": 0.4, "volume_multiplier": 0.8},
             6: {"rsi_sell_max": 75, "required_conditions": 3, "min_atr_value": 0.3, "volume_multiplier": 0.7},
@@ -36,7 +36,7 @@ class SheilashortLite(BaseStrategy): # Heredar de BaseStrategy
         self.volume_multiplier = config.get("volume_multiplier", level_params["volume_multiplier"])
         self.volume_ema_period = config.get("volume_ema_period", 20)
         self.adx_period = config.get("adx_period", 14)
-        self.adx_threshold = config.get("adx_threshold", 20)
+        self.adx_threshold = config.get("adx_threshold", 15)
 
         self.sl_multiplier = config.get("sl_multiplier", 1.5)
         self.tp_multiplier = config.get("tp_multiplier", 1.0)

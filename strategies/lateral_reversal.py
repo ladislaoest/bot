@@ -27,12 +27,12 @@ class LateralReversal(BaseStrategy):
         
         # Niveles de agresividad para RSI
         agg_levels_rsi_ob = {
-            1: 80, 2: 75, 3: 70, 4: 65, 5: 60,
-            6: 55, 7: 50, 8: 45, 9: 40, 10: 35
+            1: 80, 2: 78, 3: 65, 4: 60, 5: 55,
+            6: 50, 7: 45, 8: 40, 9: 35, 10: 30
         }
         agg_levels_rsi_os = {
-            1: 20, 2: 25, 3: 30, 4: 35, 5: 40,
-            6: 45, 7: 50, 8: 55, 9: 60, 10: 65
+            1: 20, 2: 22, 3: 35, 4: 40, 5: 45,
+            6: 50, 7: 55, 8: 60, 9: 65, 10: 70
         }
         
         self.rsi_overbought = config.get('rsi_overbought', agg_levels_rsi_ob.get(aggressiveness_level, 70))
@@ -45,11 +45,12 @@ class LateralReversal(BaseStrategy):
 
         # Parámetros de Volumen
         self.volume_window = config.get('volume_window', 20)
-        self.volume_multiplier = config.get('volume_multiplier', 1.0) # Reducido para ser más permisivo
+        self.volume_multiplier = config.get('volume_multiplier', 0.8) # Reducido para ser más permisivo
 
         # Factor de tolerancia para Bandas de Bollinger (nuevo parámetro)
         agg_levels_bb_tolerance = {
-            1: 0.0005, 5: 0.0010, 10: 0.0015
+            1: 0.0005, 2: 0.0007, 3: 0.0015, 4: 0.0020, 5: 0.0025,
+            6: 0.0030, 7: 0.0035, 8: 0.0040, 9: 0.0045, 10: 0.0050
         }
         self.bb_tolerance_factor = config.get('bb_tolerance_factor', agg_levels_bb_tolerance.get(aggressiveness_level, 0.0010))
 

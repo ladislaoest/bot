@@ -18,7 +18,7 @@ class Guillermoshort(BaseStrategy): # Heredar de BaseStrategy
         agg_levels = {
             1: {"rsi_sell": 40, "retest_range_factor": 0.0005, "min_atr": 0.5},  # Muy conservador
             2: {"rsi_sell": 43, "retest_range_factor": 0.0006, "min_atr": 0.5},
-            3: {"rsi_sell": 46, "retest_range_factor": 0.0007, "min_atr": 0.5},
+            3: {"rsi_sell": 55, "retest_range_factor": 0.0010, "min_atr": 0.3},
             4: {"rsi_sell": 49, "retest_range_factor": 0.0008, "min_atr": 0.5},
             5: {"rsi_sell": 52, "retest_range_factor": 0.0009, "min_atr": 0.5},  # Intermedio
             6: {"rsi_sell": 55, "retest_range_factor": 0.0010, "min_atr": 0.5},
@@ -36,7 +36,7 @@ class Guillermoshort(BaseStrategy): # Heredar de BaseStrategy
         self.retest_range_factor = config.get("retest_range_factor", level_params["retest_range_factor"])
         self.rsi_period = config.get("rsi_period", 14)
         self.volume_lookback = config.get("volume_lookback", 5)
-        self.volume_multiplier = config.get("volume_multiplier", 1.5)
+        self.volume_multiplier = config.get("volume_multiplier", 1.2)
         self.atr_period = config.get("atr_period", 14)
         self.min_atr = config.get("min_atr", level_params["min_atr"])
         self.sl_multiplier = config.get("sl_multiplier", 1.5) # Añadido

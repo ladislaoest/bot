@@ -18,7 +18,7 @@ class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: A
         agg_levels = {
             1: {"rsi_buy": 55},  # Conservador
             2: {"rsi_buy": 52},
-            3: {"rsi_buy": 49},
+            3: {"rsi_buy": 45},
             4: {"rsi_buy": 46},
             5: {"rsi_buy": 43},  # Intermedio
             6: {"rsi_buy": 40},
@@ -30,16 +30,16 @@ class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: A
         level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
 
         # --- Configuración ---
-        self.opening_range_minutes = config.get("opening_range_minutes", 10)
+        self.opening_range_minutes = config.get("opening_range_minutes", 7)
         self.ema_fast = config.get("ema_fast", 9)
         self.ema_slow = config.get("ema_slow", 15)
         self.ema_trend_period = config.get("ema_trend_period", 40)
         self.rsi_period = config.get("rsi_period", 14)
         self.volume_lookback = config.get("volume_lookback", 10)
-        self.volume_multiplier = config.get("volume_multiplier", 1.0)
+        self.volume_multiplier = config.get("volume_multiplier", 0.8)
         self.atr_period = config.get("atr_period", 14)
         self.adx_period = config.get("adx_period", 14)
-        self.adx_threshold = config.get("adx_threshold", 20)
+        self.adx_threshold = config.get("adx_threshold", 15)
         self.macd_fast = config.get("macd_fast", 12)
         self.macd_slow = config.get("macd_slow", 26)
         self.macd_signal = config.get("macd_signal", 9)
