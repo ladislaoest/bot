@@ -160,8 +160,8 @@ class Guillermoshort(BaseStrategy): # Heredar de BaseStrategy
             sl_pct = 0.0
             tp_pct = 0.0
             if not df.empty and not pd.isna(latest["ATR"]) and latest["ATR"] > 0 and latest['close'] > 0: # Usar ATR de 1m para SL/TP
-                sl_pct = (self.sl_multiplier * latest["ATR"] / latest['close']) * 100
-                tp_pct = (self.tp_multiplier * latest["ATR"] / latest['close']) * 100
+                sl_pct = (self.sl_multiplier * latest["ATR"] / latest['close'])
+                tp_pct = (self.tp_multiplier * latest["ATR"] / latest['close'])
             else:
                 # Si ATR o close son inválidos, usar valores por defecto o de configuración
                 sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto

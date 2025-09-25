@@ -1214,11 +1214,11 @@ class TradingBot:
                 self.open_trades[strategy_name].append(deal_id)
 
             if direction == "BUY":
-                final_sl = real_entry_price * (1 - sl_pct / 100)
-                final_tp = real_entry_price * (1 + tp_pct / 100)
+                final_sl = real_entry_price * (1 - sl_pct)
+                final_tp = real_entry_price * (1 + tp_pct)
             else: # SELL
-                final_sl = real_entry_price * (1 + sl_pct / 100)
-                final_tp = real_entry_price * (1 - tp_pct / 100)
+                final_sl = real_entry_price * (1 + sl_pct)
+                final_tp = real_entry_price * (1 - tp_pct)
 
             amend_response = self.capital_client_api.amend_position(deal_id, final_sl, final_tp)
             if amend_response and "dealReference" in amend_response:
@@ -1347,8 +1347,8 @@ class TradingBot:
                                     sl_multiplier = instance.sl_multiplier
                                     tp_multiplier = instance.tp_multiplier
 
-                                sl_pct = (sl_multiplier * atr_5m_value / preliminary_price) * 100
-                                tp_pct = (tp_multiplier * atr_5m_value / preliminary_price) * 100
+                                sl_pct = (sl_multiplier * atr_5m_value / preliminary_price)
+                                tp_pct = (tp_multiplier * atr_5m_value / preliminary_price)
 
                             if sl_pct is None or tp_pct is None or sl_pct == 0.0 or tp_pct == 0.0:
                                 logger.error(f"Estrategia '{name}' devolvió 'sl_pct' o 'tp_pct' inválidos (None o 0.0). Saltando trade.")

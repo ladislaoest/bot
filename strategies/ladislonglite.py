@@ -145,8 +145,8 @@ class LadisLongLite(BaseStrategy): # Heredar de BaseStrategy
             
             # Calcular SL y TP basados en ATR
             if not df_5m.empty and not pd.isna(latest_5m["ATR"]): # Usar ATR de 5m para SL/TP
-                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100 # Usar latest_1m['close'] para el cálculo del porcentaje
-                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_1m['close']) # Usar latest_1m['close'] para el cálculo del porcentaje
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_1m['close'])
             detailed_status["sl_pct"] = sl_pct
             detailed_status["tp_pct"] = tp_pct
 

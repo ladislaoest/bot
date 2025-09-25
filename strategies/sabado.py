@@ -166,8 +166,8 @@ class Sabado(BaseStrategy): # Heredar de BaseStrategy
             sl_pct = 0.0
             tp_pct = 0.0
             if not pd.isna(latest_5m["ATR"]) and latest_5m["ATR"] > 0 and latest_5m['close'] > 0:
-                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
-                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close'])
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close'])
             else:
                 # Si ATR o close son inválidos, usar valores por defecto o de configuración
                 sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto

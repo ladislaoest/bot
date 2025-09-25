@@ -132,8 +132,8 @@ class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: A
 
                     # --- Gestión de Riesgo ---
                     if not pd.isna(latest_1m["ATR"]) and latest_1m["ATR"] > 0 and latest_1m['close'] > 0:
-                        sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
-                        tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+                        sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close'])
+                        tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close'])
                     else:
                         # Si ATR o close son inválidos, usar valores por defecto o de configuración
                         sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto
