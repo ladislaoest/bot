@@ -1009,7 +1009,7 @@ class TradingBot:
             headers = {'Content-Type': 'application/json'}
             data = {"contents": [{"parts": [{"text": prompt}]}]}
 
-            response = requests.post(api_url, headers=headers, json=data, timeout=10)
+            response = requests.post(api_url, headers=headers, json=data, timeout=30)
             response.raise_for_status()
 
             result = response.json()
@@ -1053,6 +1053,14 @@ class TradingBot:
 
         # Return the last `limit` klines
         return {'prices': self.klines_data[interval][-limit:]}
+
+    def get_historical_data_from_binance(self, symbol, interval, limit):
+        try:
+            klines_data = self.binance_client_api.get_historical_klines(symbol=symbol, interval=interval, limit=limit)
+            return klines_data
+        except Exception as e:
+            logger.error(f"ERROR al obtener datos de Binance para {symbol}-{interval}-{limit}: {e}")
+            return {}
 
     def get_app_status(self):
         if self.running:
@@ -1440,6 +1448,10 @@ class TradingBot:
                         logger.error(f"ERROR: La estrategia '{name}' falló durante la ejecución: {strategy_e}")
                         with self.signals_lock: # New line
                             self.strategy_signals[name] = {"signal": "ERROR", "message": f"Error: {strategy_e}"}
+                    finally:
+                        self.opening_trade[name] = False
+                    finally:
+                        self.opening_trade[name] = False
 
             except Exception as e:
                 logger.error(f"ERROR CRÍTICO en el bucle de polling: {e}")
