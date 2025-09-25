@@ -131,8 +131,16 @@ class LateralReversal(BaseStrategy):
             detailed_status["volume_confirm"] = volume_confirm
 
             # Calcular SL y TP
-            sl_pct = (self.sl_atr_multiplier * latest_candle["ATR"] / current_price) * 100
-            tp_pct = (self.tp_atr_multiplier * latest_candle["ATR"] / current_price) * 100
+            sl_pct = 0.0
+            tp_pct = 0.0
+            if not pd.isna(latest_candle["ATR"]) and latest_candle["ATR"] > 0 and current_price > 0:
+                sl_pct = (self.sl_atr_multiplier * latest_candle["ATR"] / current_price) * 100
+                tp_pct = (self.tp_atr_multiplier * latest_candle["ATR"] / current_price) * 100
+            else:
+                # Si ATR o current_price son inválidos, usar valores por defecto o de configuración
+                sl_pct = self.sl_atr_multiplier * 0.01 # Un valor pequeño por defecto
+                tp_pct = self.tp_atr_multiplier * 0.01 # Un valor pequeño por defecto
+                detailed_status["error"] = "ATR o precio actual inválido para SL/TP."
             detailed_status["sl_pct"] = sl_pct
             detailed_status["tp_pct"] = tp_pct
 

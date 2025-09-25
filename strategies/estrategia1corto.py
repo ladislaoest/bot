@@ -121,9 +121,14 @@ class estrategia1corto(BaseStrategy): # Heredar de BaseStrategy
             # Calcular SL y TP basados en ATR
             sl_pct = 0.0
             tp_pct = 0.0
-            if not pd.isna(latest_5m["ATR"]):
+            if not pd.isna(latest_5m["ATR"]) and latest_5m["ATR"] > 0 and latest_5m['close'] > 0:
                 sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
                 tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+            else:
+                # Si ATR o close son inválidos, usar valores por defecto o de configuración
+                sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto
+                tp_pct = self.tp_multiplier * 0.01 # Un valor pequeño por defecto
+                detailed_status["error"] = "ATR o precio de cierre inválido para SL/TP."
             detailed_status["sl_pct"] = sl_pct
             detailed_status["tp_pct"] = tp_pct
 

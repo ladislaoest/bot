@@ -41,7 +41,7 @@ class LadisLongLite(BaseStrategy): # Heredar de BaseStrategy
         self.min_atr = config.get("min_atr", level_params["min_atr"])
         self.volume_multiplier = config.get("volume_multiplier", level_params["volume_multiplier"])
         self.min_ema_spread_pct = config.get("min_ema_spread_pct", level_params["min_ema_spread_pct"])
-        self.sl_multiplier = config.get("sl_multiplier", 2.0) # Añadido
+        self.sl_multiplier = config.get("sl_multiplier", 1.0) # Reducido para evitar errores de SL máximo
         self.tp_multiplier = config.get("tp_multiplier", 0.8) # Añadido
 
         self.rsi_min_level = config.get("rsi_min_level", level_params["rsi_min"])

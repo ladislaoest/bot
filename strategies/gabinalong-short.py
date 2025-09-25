@@ -125,9 +125,14 @@ class GabinalongShort(BaseStrategy): # Heredar de BaseStrategy
             })
 
             # Calcular SL y TP basados en ATR
-            if not df_1m.empty and not pd.isna(latest_1m["ATR"]): # Usar ATR de 1m para SL/TP
+            if not df_1m.empty and not pd.isna(latest_1m["ATR"]) and latest_1m["ATR"] > 0 and latest_1m['close'] > 0: # Usar ATR de 1m para SL/TP
                 sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
                 tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+            else:
+                # Si ATR o close son inválidos, usar valores por defecto o de configuración
+                sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto
+                tp_pct = self.tp_multiplier * 0.01 # Un valor pequeño por defecto
+                detailed_status["error"] = "ATR o precio de cierre inválido para SL/TP."
             detailed_status["sl_pct"] = sl_pct
             detailed_status["tp_pct"] = tp_pct
 
