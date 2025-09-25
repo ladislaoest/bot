@@ -1,0 +1,1602 @@
+Eres un analista de trading experto y muy detallado para un bot de criptomonedas. Tu objetivo es proporcionar un análisis exhaustivo y actionable para mejorar el rendimiento del bot, analizando hasta el último detalle de cada estrategia. Sé extremadamente específico y justificado en tus consejos.
+
+            Basado en los siguientes datos, genera un reporte en español con el siguiente formato:
+            1.  <b>Diagnóstico General del Bot</b>: Un párrafo conciso sobre el rendimiento general del bot (ganando, perdiendo, en equilibrio), destacando tendencias clave.
+            2.  <b>Análisis Detallado por Estrategia</b>:
+                Para CADA estrategia, proporciona:
+                a.  <b>Rendimiento Observado</b>: Resumen de su P/L, número de operaciones, tasa de acierto.
+                b.  <b>Análisis de Entrada (Condiciones y Parámetros)</b>: Describe cómo entra la estrategia, analizando sus parámetros actuales y cómo estos influyen en las señales. Si es posible, infiere qué condiciones de mercado (tendencia, volatilidad, momentum) favorecen o perjudican sus entradas.
+                c.  <b>Análisis de Salida (SL/TP)</b>: Evalúa la gestión de riesgo (SL/TP) de la estrategia. ¿Son adecuados para su estilo? ¿Se tocan con demasiada frecuencia o muy poco? Sugiere ajustes si es necesario.
+                d.  <b>Consejos de Optimización</b>: Propón cambios de parámetros específicos y justificados para mejorar su rendimiento. Por ejemplo: "Para 'Estrategia X', considera aumentar el periodo de la EMA de 50 a 100 para reducir señales falsas en mercados volátiles" o "El Take Profit de 'Estrategia Y' en 0.3% es demasiado ambicioso para un scalp, prueba a reducirlo a 0.18%". Si la estrategia cae en falsas rupturas o se comporta mal en mercados laterales, explica por qué y cómo ajustar los parámetros para mitigar esto.
+            3.  <b>Tácticas para Operaciones Abiertas</b>: Si hay operaciones abiertas, da una recomendación táctica para cada una (ej. "La operación de 'Estrategia Z' está cerca del Take Profit, mantener" o "La operación de 'Estrategia W' está en ligera pérdida, considera mover el Stop Loss a precio de entrada si el mercado se vuelve en contra").
+
+            --- DATOS ---
+            <b>Precio Actual de BTC/USD:</b> 111870.55
+
+            <b>Resumen de Rendimiento General y por Estrategia:</b>
+            <b>Resumen de Rendimiento</b>
+
+<b>Rendimiento General:</b>
+  P/L Total: -0.97
+  Total Operaciones Cerradas: 4
+  Tasa de Acierto: 50.00%
+
+<b>Rendimiento por Estrategia:</b>
+  <b>LadisLongLite:</b>
+    P/L: -1.14
+    Operaciones: 2
+    Tasa de Acierto: 0.00%
+  <b>SabadoLite:</b>
+    P/L: 0.17
+    Operaciones: 2
+    Tasa de Acierto: 100.00%
+
+
+            <b>Configuración Actual de Parámetros por Estrategia:</b>
+            {
+  "estrategia1corto": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "ema9_period": 9,
+    "ema20_period": 20,
+    "ema50_period": 50,
+    "rsi_period": 14,
+    "atr_period": 14,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32,
+    "adx_period": 14,
+    "adx_threshold": 20
+  },
+  "GabinalongShort": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32
+  },
+  "Guillermoshort": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32
+  },
+  "Ladis": {
+    "is_active": true,
+    "aggressiveness_level": 3
+  },
+  "LadisLong": {
+    "is_active": true,
+    "aggressiveness_level": 7,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32
+  },
+  "LadisLongLite": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32,
+    "ema_fast": 12,
+    "ema_slow": 26,
+    "adx_period": 14,
+    "adx_threshold": 20
+  },
+  "Sabado": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32,
+    "volume_ema_period": 20,
+    "volume_multiplier": 1.5,
+    "min_atr_threshold": 0.0005
+  },
+  "SabadoLite": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "ema_long_period": 200,
+    "ema_medium_period": 50,
+    "ema_short_period": 20,
+    "rsi_period": 14,
+    "atr_period": 14,
+    "volume_ema_period": 20,
+    "volume_multiplier": 1.0,
+    "min_atr_threshold": 0.0005,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32,
+    "atr_sma_period": 20
+  },
+  "ScalpingEmaRsi": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32
+  },
+  "SheilalongLite": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32,
+    "adx_period": 14,
+    "adx_threshold": 20
+  },
+  "SheilashortLite": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "ema_slow_period": 50,
+    "ema_fast_period": 20,
+    "atr_period": 14,
+    "sl_multiplier": 0.16,
+    "tp_multiplier": 0.32,
+    "volume_ema_period": 20,
+    "volume_multiplier": 1.0
+  },
+  "LateralReversal": {
+    "is_active": true,
+    "aggressiveness_level": 5,
+    "bb_window": 20,
+    "bb_window_dev": 2.0,
+    "rsi_window": 14,
+    "rsi_overbought": 65,
+    "rsi_oversold": 35,
+    "atr_window": 14,
+    "sl_atr_multiplier": 0.16,
+    "tp_atr_multiplier": 0.32,
+    "volume_window": 20,
+    "volume_multiplier": 1.2
+  },
+  "global_settings": {
+    "aggressiveness_level": 10,
+    "enable_tp_sl_against_trend": true,
+    "enable_two_tp_trades": true,
+    "global_order_size": 0.002,
+    "prevent_counter_trend_trades": false
+  },
+  "BaseStrategy": {
+    "is_active": true,
+    "aggressiveness_level": 3
+  }
+}
+
+            <b>Historial Completo de Operaciones:</b>
+            Estrategia: SabadoLite, Apertura: 2025-09-25 06:10:22, Dirección: SELL, Entrada: 112542.00, Cierre: 0.00, P/L: 0.08, Estado: CLOSED, Razón Cierre: Manual/Other
+Estrategia: SabadoLite, Apertura: 2025-09-25 06:15:38, Dirección: SELL, Entrada: 112239.15, Cierre: 0.00, P/L: 0.09, Estado: CLOSED, Razón Cierre: Manual/Other
+Estrategia: LadisLongLite, Apertura: 2025-09-25 06:29:18, Dirección: BUY, Entrada: 111970.05, Cierre: 0.00, P/L: -0.57, Estado: CLOSED, Razón Cierre: Manual/Other
+Estrategia: LadisLongLite, Apertura: 2025-09-25 06:29:23, Dirección: BUY, Entrada: 111978.35, Cierre: 0.00, P/L: -0.57, Estado: CLOSED, Razón Cierre: Manual/Other
+Estrategia: LadisLongLite, Apertura: 2025-09-25 06:54:41, Dirección: BUY, Entrada: 111704.25, Cierre: N/A, P/L: N/A, Estado: OPEN, Razón Cierre: N/A
+
+            <b>Operaciones Actualmente Abiertas:</b>
+            Estrategia: LadisLongLite, Apertura: 2025-09-25 06:54:41, Dirección: BUY, Entrada: 111704.25
+
+            <b>Código Fuente de las Estrategias Activas:</b>
+            --- Código de la estrategia: estrategia1corto ---
+# En strategies/estrategia1corto.py
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi
+import pandas as pd
+import ta
+import logging # Añadido
+from strategies.base import BaseStrategy # Añadido
+
+logger = logging.getLogger(__name__) # Añadido
+
+class estrategia1corto(BaseStrategy): # Heredar de BaseStrategy
+    def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level) # Llamada al constructor de la clase base
+        # El resto del código de __init__ se mantiene igual
+
+        agg_levels = {
+            1: {"rsi_sell": 65, "required_conditions": 4, "adx_threshold": 15},
+            2: {"rsi_sell": 62, "required_conditions": 4, "adx_threshold": 15},
+            3: {"rsi_sell": 54, "required_conditions": 4, "adx_threshold": 15},
+            4: {"rsi_sell": 51, "required_conditions": 4, "adx_threshold": 15},
+            5: {"rsi_sell": 48, "required_conditions": 4, "adx_threshold": 15},
+            6: {"rsi_sell": 45, "required_conditions": 4, "adx_threshold": 15},
+            7: {"rsi_sell": 42, "required_conditions": 4, "adx_threshold": 15},
+            8: {"rsi_sell": 39, "required_conditions": 4, "adx_threshold": 15},
+            9: {"rsi_sell": 36, "required_conditions": 4, "adx_threshold": 15},
+            10: {"rsi_sell": 33, "required_conditions": 4, "adx_threshold": 15}
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        self.ema9_period = config.get('ema9_period', 9)
+        self.ema20_period = config.get('ema20_period', 20)
+        self.ema50_period = config.get('ema50_period', 50)
+        self.rsi_period = config.get('rsi_period', 14)
+        self.atr_period = config.get("atr_period", 14) # Nuevo
+        self.sl_multiplier = config.get("sl_multiplier", 1.5) # Nuevo
+        self.tp_multiplier = config.get("tp_multiplier", 1.0) # Nuevo
+        self.adx_period = config.get("adx_period", 14) # Nuevo
+        self.adx_threshold = config.get("adx_threshold", level_params["adx_threshold"]) # Nuevo
+        
+        self.rsi_sell_threshold = config.get('rsi_sell_threshold', level_params["rsi_sell"])
+        self.required_conditions = config.get('required_conditions', level_params["required_conditions"])
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        detailed_status = {
+            "cond_downtrend_5m": False,
+            "cond_pullback_5m": False,
+            "cond_ema_cross_1m": False,
+            "cond_macd_1m": False,
+            "cond_rsi_1m": False,
+            "adx_filter_ok_5m": False,
+            "rsi_1m": 0.0,
+            "macd_diff_1m": 0.0,
+            "sl_pct": 0.0,
+            "tp_pct": 0.0,
+            "error": "",
+            "current_close_5m": 0.0,
+            "ema20_5m": 0.0,
+            "ema50_5m": 0.0,
+            "current_high_5m": 0.0,
+            "current_atr_5m": 0.0,
+            "adx_5m": 0.0,
+            "adx_threshold_config": self.adx_threshold,
+            "current_close_1m": 0.0,
+            "ema9_1m": 0.0,
+            "current_rsi_1m": 0.0,
+            "prev_rsi_1m": 0.0,
+            "rsi_sell_threshold_config": self.rsi_sell_threshold,
+            "current_macd_diff_1m": 0.0,
+            "prev_macd_diff_1m": 0.0
+        }
+        try:
+            # --- Timeframes ---
+            prices_5m = binance_data_provider.get_historical_klines("BTCUSDT", "5m", limit=max(self.ema50_period, self.atr_period, self.adx_period) + 50).get("prices", []) # Ajustar límite
+            df_5m = normalize_klines(prices_5m, min_length=max(self.ema50_period, self.atr_period, self.adx_period) + 5) # Ajustar min_length
+            if df_5m.empty:
+                detailed_status["error"] = "Datos 5m insuficientes."
+                return {"signal": "HOLD", "message": "Datos 5m insuficientes.", "detailed_status": detailed_status}
+
+            prices_1m = binance_data_provider.get_historical_klines("BTCUSDT", "1m", limit=self.rsi_period + 50).get("prices", []) # Ajustar límite
+            df_1m = normalize_klines(prices_1m, min_length=self.rsi_period + 5) # Ajustar min_length
+            if df_1m.empty:
+                detailed_status["error"] = "Datos 1m insuficientes."
+                return {"signal": "HOLD", "message": "Datos 1m insuficientes.", "detailed_status": detailed_status}
+
+            # --- Indicadores (5m) ---
+            df_5m = add_ema(df_5m, self.ema20_period)
+            df_5m = add_ema(df_5m, self.ema50_period)
+            df_5m["ATR"] = ta.volatility.AverageTrueRange(
+                high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.atr_period
+            ).average_true_range() # Nuevo
+            df_5m["ADX"] = ta.trend.ADXIndicator(
+                high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.adx_period
+            ).adx() # Nuevo
+            
+            # --- Indicadores (1m) ---
+            df_1m = add_ema(df_1m, self.ema9_period)
+            df_1m = add_rsi(df_1m, self.rsi_period)
+            macd_1m = ta.trend.MACD(df_1m['close'])
+            df_1m['MACD'] = macd_1m.macd()
+            df_1m['MACD_Signal'] = macd_1m.macd_signal()
+            df_1m['MACD_Diff'] = macd_1m.macd_diff()
+
+            latest_5m = df_5m.iloc[-1]
+            latest_1m = df_1m.iloc[-1]
+            prev_1m = df_1m.iloc[-2]
+
+            detailed_status["current_close_5m"] = latest_5m['close']
+            detailed_status["ema20_5m"] = latest_5m[f'EMA{self.ema20_period}']
+            detailed_status["ema50_5m"] = latest_5m[f'EMA{self.ema50_period}']
+            detailed_status["current_high_5m"] = latest_5m['high']
+            detailed_status["current_atr_5m"] = latest_5m['ATR']
+            detailed_status["adx_5m"] = latest_5m['ADX']
+
+            detailed_status["current_close_1m"] = latest_1m['close']
+            detailed_status["ema9_1m"] = latest_1m[f'EMA{self.ema9_period}']
+            detailed_status["current_rsi_1m"] = latest_1m['RSI']
+            detailed_status["prev_rsi_1m"] = prev_1m['RSI']
+            detailed_status["current_macd_diff_1m"] = latest_1m['MACD_Diff']
+            detailed_status["prev_macd_diff_1m"] = prev_1m['MACD_Diff']
+
+            # Calcular SL y TP basados en ATR
+            sl_pct = 0.0
+            tp_pct = 0.0
+            if not pd.isna(latest_5m["ATR"]):
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+            detailed_status["sl_pct"] = sl_pct
+            detailed_status["tp_pct"] = tp_pct
+
+            # --- Condiciones de Contexto (5m) ---
+            # 1. Tendencia General Bajista
+            cond_downtrend = latest_5m['close'] <= latest_5m[f'EMA{self.ema50_period}'] * 1.005 # Relajado
+            
+            # 2. Pullback hacia EMA de resistencia
+            cond_pullback = latest_5m['close'] >= latest_5m[f'EMA{self.ema20_period}'] * 0.995 # Relajado
+
+            # 3. Filtro de mercado lateral (ADX)
+            adx_filter_ok = not pd.isna(latest_5m["ADX"]) and latest_5m["ADX"] > self.adx_threshold # Nuevo
+
+            # --- Condiciones de Gatillo (1m) ---
+            # 1. Cruce bajista de la EMA rápida
+            cond_ema_cross = latest_1m['close'] < latest_1m[f'EMA{self.ema9_period}']
+            
+            # 2. MACD perdiendo fuerza o ya bajista
+            cond_macd = latest_1m['MACD_Diff'] < prev_1m['MACD_Diff']
+            
+            # 3. RSI por debajo del umbral y cayendo
+            cond_rsi = latest_1m['RSI'] < self.rsi_sell_threshold and latest_1m['RSI'] < prev_1m['RSI']
+
+            detailed_status.update({
+                "cond_downtrend_5m": cond_downtrend,
+                "cond_pullback_5m": cond_pullback,
+                "adx_filter_ok_5m": adx_filter_ok, # Nuevo
+                "cond_ema_cross_1m": cond_ema_cross,
+                "cond_macd_1m": cond_macd,
+                "cond_rsi_1m": cond_rsi,
+                "rsi_1m": latest_1m['RSI'],
+                "macd_diff_1m": latest_1m['MACD_Diff']
+            })
+
+            # --- Lógica de Entrada ---
+            if cond_downtrend and cond_pullback and adx_filter_ok: # Añadir ADX al contexto
+                # El contexto es bueno, ahora buscamos el gatillo en 1m
+                trigger_conditions = [cond_ema_cross, cond_macd, cond_rsi]
+                conditions_met = sum(trigger_conditions)
+                
+                if conditions_met >= self.required_conditions:
+                    entry = latest_1m['close']
+                    return {
+                        "signal": "SELL",
+                        "message": f"Gatillo de venta con {conditions_met}/{len(trigger_conditions)} condiciones en 1m. Contexto: Bajista, Pullback, ADX OK.",
+                        "entry": entry,
+                        "sl_pct": sl_pct,
+                        "tp_pct": tp_pct,
+                        "detailed_status": detailed_status
+                    }
+            
+            # Construir mensaje detallado para el estado HOLD
+            hold_message_parts = []
+            
+            # Resumen de condiciones de contexto
+            hold_message_parts.append(f"Tendencia Bajista (5m): Precio {latest_5m['close']:.2f} < EMA{self.ema50_period} {latest_5m[f'EMA{self.ema50_period}']:.2f} {'✅' if cond_downtrend else '❌'}")
+            hold_message_parts.append(f"Pullback (5m): High {latest_5m['high']:.2f} >= EMA{self.ema20_period} {latest_5m[f'EMA{self.ema20_period}']:.2f} {'✅' if cond_pullback else '❌'}")
+            hold_message_parts.append(f"ADX OK (5m): ADX {latest_5m['ADX']:.2f} > {self.adx_threshold} {'✅' if adx_filter_ok else '❌'}")
+
+            # Resumen de condiciones de gatillo
+            hold_message_parts.append(f"Cruce EMA Bajista (1m): Close {latest_1m['close']:.2f} < EMA{self.ema9_period} {latest_1m[f'EMA{self.ema9_period}']:.2f} {'✅' if cond_ema_cross else '❌'}")
+            hold_message_parts.append(f"MACD Bajista (1m): MACD_Diff {latest_1m['MACD_Diff']:.2f} < Prev_MACD_Diff {prev_1m['MACD_Diff']:.2f}: {'✅' if cond_macd else '❌'}")
+            hold_message_parts.append(f"RSI Cayendo (1m): RSI {latest_1m['RSI']:.2f} < {self.rsi_sell_threshold} y < Prev_RSI {prev_1m['RSI']:.2f}: {'✅' if cond_rsi else '❌'}")
+
+            final_hold_message = " | ".join(hold_message_parts)
+
+            return {"signal": "HOLD", "message": f"Esperando condiciones: {final_hold_message}", "detailed_status": detailed_status}
+
+        except Exception as e:
+            logger.error(f"estrategia1corto error: {str(e)}")
+            detailed_status["error"] = str(e) # Añadir error al detailed_status
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+--- Código de la estrategia: Guillermoshort ---
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi, scale_aggressiveness
+import pandas as pd
+import ta
+import logging
+from strategies.base import BaseStrategy # Añadido
+
+logger = logging.getLogger(__name__)
+
+class Guillermoshort(BaseStrategy): # Heredar de BaseStrategy
+    """Estrategia Guillermoshort: Scalping bajista con ruptura de soporte + retesteo + gestión de riesgo en 1m."""
+
+    def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level) # Llamada al constructor de la clase base
+        # El resto del código de __init__ se mantiene igual
+
+        # --- Definición de parámetros por nivel de agresividad ---
+        agg_levels = {
+            1: {"rsi_sell": 40, "retest_range_factor": 0.0005, "min_atr": 0.5},  # Muy conservador
+            2: {"rsi_sell": 43, "retest_range_factor": 0.0006, "min_atr": 0.5},
+            3: {"rsi_sell": 46, "retest_range_factor": 0.0007, "min_atr": 0.5},
+            4: {"rsi_sell": 49, "retest_range_factor": 0.0008, "min_atr": 0.5},
+            5: {"rsi_sell": 52, "retest_range_factor": 0.0009, "min_atr": 0.5},  # Intermedio
+            6: {"rsi_sell": 55, "retest_range_factor": 0.0010, "min_atr": 0.5},
+            7: {"rsi_sell": 58, "retest_range_factor": 0.0011, "min_atr": 0.5},
+            8: {"rsi_sell": 61, "retest_range_factor": 0.0012, "min_atr": 0.5},
+            9: {"rsi_sell": 64, "retest_range_factor": 0.0013, "min_atr": 0.5},
+            10: {"rsi_sell": 67, "retest_range_factor": 0.0014, "min_atr": 0.5} # Muy permisivo
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        # --- Asignación de parámetros ---
+        self.ema_fast_period = config.get("ema_fast_period", 25)
+        self.ema_slow_period = config.get("ema_slow_period", 70)
+        self.lookback_period_for_support = config.get("lookback_period_for_support", 20)
+        self.retest_range_factor = config.get("retest_range_factor", level_params["retest_range_factor"])
+        self.rsi_period = config.get("rsi_period", 14)
+        self.volume_lookback = config.get("volume_lookback", 5)
+        self.volume_multiplier = config.get("volume_multiplier", 1.5)
+        self.atr_period = config.get("atr_period", 14)
+        self.min_atr = config.get("min_atr", level_params["min_atr"])
+        self.sl_multiplier = config.get("sl_multiplier", 1.5) # Añadido
+        self.tp_multiplier = config.get("tp_multiplier", 1.0) # Añadido
+
+        # --- Parámetros ajustados por agresividad ---
+        self.rsi_sell_threshold = config.get("rsi_sell_threshold", level_params["rsi_sell"])
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        detailed_status = {
+            "data_ok": False,
+            "trend_ok": False,
+            "volatility_ok": False,
+            "support_level_ok": False,
+            "breakout_ok": False,
+            "retest_ok": False,
+            "rsi_ok": False,
+            "volume_ok": False,
+            "macd_bearish_ok": False, # NEW
+            "current_price": 0.0,
+            "ema_fast_val": 0.0,
+            "ema_slow_val": 0.0,
+            "atr_val": 0.0,
+            "support_level": 0.0,
+            "rsi_val": 0.0,
+            "volume_val": 0.0,
+            "volume_avg_val": 0.0,
+            "macd_val": 0.0, # NEW
+            "macd_signal_val": 0.0, # NEW
+            "error": ""
+        }
+        try:
+            limit = max(
+                self.ema_slow_period,
+                self.lookback_period_for_support,
+                self.rsi_period,
+                self.volume_lookback,
+                self.atr_period
+            ) + 30
+
+            prices = binance_data_provider.get_historical_klines(
+                symbol, "1m", limit=limit
+            ).get("prices", [])
+            df = normalize_klines(prices, min_length=limit - 10)
+            if df.empty:
+                detailed_status["data_ok"] = False
+                detailed_status["error"] = "Datos insuficientes."
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+
+            # Indicadores
+            df = add_ema(df, self.ema_fast_period)
+            df = add_ema(df, self.ema_slow_period)
+            df = add_rsi(df, self.rsi_period)
+            df["volume_avg"] = df["volume"].rolling(window=self.volume_lookback).mean()
+            df["ATR"] = ta.volatility.AverageTrueRange(
+                high=df["high"], low=df["low"], close=df["close"], window=self.atr_period
+            ).average_true_range()
+            
+            # NEW MACD Calculation
+            df["MACD"] = ta.trend.MACD(df['close'], window_slow=26, window_fast=12, window_sign=9).macd()
+            df["MACD_Signal"] = ta.trend.MACD(df['close'], window_slow=26, window_fast=12, window_sign=9).macd_signal()
+
+
+            latest = df.iloc[-1]
+            detailed_status["current_price"] = latest['close']
+            detailed_status["ema_fast_val"] = latest[f'EMA{self.ema_fast_period}']
+            detailed_status["ema_slow_val"] = latest[f'EMA{self.ema_slow_period}']
+            detailed_status["atr_val"] = latest['ATR']
+            detailed_status["rsi_val"] = latest['RSI']
+            detailed_status["volume_val"] = latest['volume']
+            detailed_status["volume_avg_val"] = latest['volume_avg']
+            detailed_status["macd_val"] = latest["MACD"]
+            detailed_status["macd_signal_val"] = latest["MACD_Signal"]
+
+
+            # Filtro tendencia bajista
+            if latest[f"EMA{self.ema_fast_period}"] >= latest[f"EMA{self.ema_slow_period}"] * 1.005: # Relajado
+                detailed_status["trend_ok"] = False
+                detailed_status["error"] = f"Tendencia no bajista (EMA{self.ema_fast_period} >= EMA{self.ema_slow_period})"
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+
+            # Filtro volatilidad
+            if latest["ATR"] < self.min_atr:
+                detailed_status["volatility_ok"] = False
+                detailed_status["error"] = f"Volatilidad insuficiente (ATR={latest['ATR']:.2f})"
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+
+            # Soporte dinámico
+            support_level = df['low'].iloc[-self.lookback_period_for_support-1:-1].min()
+            if pd.isna(support_level):
+                support_level = latest['close'] # Asignar un valor por defecto si es NaN
+                detailed_status["support_level_ok"] = False
+                detailed_status["error"] = "Soporte no disponible."
+                detailed_status["support_level"] = support_level # Actualizar detailed_status
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+            detailed_status["support_level"] = support_level # Actualizar detailed_status
+
+            # Ruptura
+            breakout_candles = df[df["close"] < support_level]
+            if breakout_candles.empty:
+                detailed_status["breakout_ok"] = False
+                detailed_status["error"] = f"Esperando ruptura del soporte {support_level:.2f}"
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+
+            # Retesteo + confirmación RSI/volumen
+            retest_upper = support_level * (1 + self.retest_range_factor)
+            retest_lower = support_level * (1 - self.retest_range_factor)
+            is_rsi_ok = latest["RSI"] < self.rsi_sell_threshold
+            is_volume_strong = latest["volume"] > latest["volume_avg"] * self.volume_multiplier
+            
+            # NEW MACD Filter
+            is_macd_bearish = latest["MACD"] < latest["MACD_Signal"]
+            if not is_macd_bearish:
+                detailed_status["macd_bearish_ok"] = False
+                detailed_status["error"] = f"MACD no bajista (MACD={latest['MACD']:.2f}, Signal={latest['MACD_Signal']:.2f})."
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+            detailed_status["macd_bearish_ok"] = True
+
+
+            # Calcular SL y TP basados en ATR
+            sl_pct = 0.0
+            tp_pct = 0.0
+            if not df.empty and not pd.isna(latest["ATR"]): # Usar ATR de 1m para SL/TP
+                sl_pct = (self.sl_multiplier * latest["ATR"] / latest['close']) * 100
+                tp_pct = (self.tp_multiplier * latest["ATR"] / latest['close']) * 100
+            detailed_status["sl_pct"] = sl_pct
+            detailed_status["tp_pct"] = tp_pct
+
+            retest_conditions_met = 0
+            if retest_lower <= latest["close"] <= retest_upper: retest_conditions_met += 1
+            if is_rsi_ok: retest_conditions_met += 1
+            if is_volume_strong: retest_conditions_met += 1
+            if is_macd_bearish: retest_conditions_met += 1
+
+            if retest_conditions_met >= 5: # Add is_macd_bearish
+                entry = latest["close"]
+
+                return {
+                    "signal": "SELL",
+                    "message": f"Retesteo bajista exitoso {support_level:.2f}",
+                    "entry": entry,
+                    "sl_pct": sl_pct,
+                    "tp_pct": tp_pct,
+                    "detailed_status": detailed_status
+                }
+
+            # Construir mensaje detallado para el estado HOLD
+            hold_message_parts = []
+            hold_message_parts.append(f"Estado: HOLD")
+            hold_message_parts.append(f"Precio actual: {detailed_status['current_price']:.2f}")
+
+            # Tendencia OK
+            hold_message_parts.append(f"Tendencia Bajista (EMA{self.ema_fast_period} {detailed_status['ema_fast_val']:.2f} < EMA{self.ema_slow_period} {detailed_status['ema_slow_val']:.2f}): {'✅' if detailed_status['trend_ok'] else '❌'}")
+
+            # Volatilidad OK
+            hold_message_parts.append(f"Volatilidad Suficiente (ATR {detailed_status['atr_val']:.2f} >= Min ATR {self.min_atr:.2f}): {'✅' if detailed_status['volatility_ok'] else '❌'}")
+
+            # Nivel de Soporte
+            hold_message_parts.append(f"Nivel de Soporte: {detailed_status['support_level']:.2f}")
+
+            # Ruptura OK
+            hold_message_parts.append(f"Ruptura de Soporte (Precio {detailed_status['current_price']:.2f} < Soporte {detailed_status['support_level']:.2f}): {'✅' if detailed_status['breakout_ok'] else '❌'}")
+
+            # Retesteo OK
+            hold_message_parts.append(f"Retesteo (Precio {detailed_status['current_price']:.2f} entre {retest_lower:.2f} y {retest_upper:.2f}): {'✅' if detailed_status['retest_ok'] else '❌'}")
+
+            # RSI OK
+            hold_message_parts.append(f"RSI Bajista (RSI {detailed_status['rsi_val']:.2f} < Umbral {self.rsi_sell_threshold:.2f}): {'✅' if detailed_status['rsi_ok'] else '❌'}")
+
+            # Volumen OK
+            volume_expected_threshold = detailed_status['volume_avg_val'] * self.volume_multiplier
+            hold_message_parts.append(f"Volumen Fuerte (Actual {detailed_status['volume_val']:.2f} > Esperado {volume_expected_threshold:.2f}): {'✅' if detailed_status['volume_ok'] else '❌'}")
+
+            # MACD Bajista OK
+            hold_message_parts.append(f"MACD Bajista (MACD {detailed_status['macd_val']:.2f} < Signal {detailed_status['macd_signal_val']:.2f}): {'✅' if detailed_status['macd_bearish_ok'] else '❌'}")
+
+            final_hold_message = " | ".join(hold_message_parts)
+
+            return {"signal": "HOLD", "message": final_hold_message, "detailed_status": detailed_status}
+
+        except Exception as e:
+            logger.error(f"Guillermoshort error: {str(e)}")
+            detailed_status["error"] = str(e)
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+
+--- Código de la estrategia: LadisLong ---
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi, scale_aggressiveness
+import pandas as pd
+import ta
+import logging
+
+logger = logging.getLogger(__name__)
+
+class LadisLong:
+    """Estrategia LadisLong: Scalping rápido basado en pullback a EMA y RSI saludable."""
+
+    def __init__(self, config=None, aggressiveness_level=3):
+        config = config or {}
+        self.aggressiveness_level = aggressiveness_level
+
+        agg_levels = {
+            1: {"rsi_min": 35, "rsi_max": 95, "min_atr": 0.3, "volume_multiplier": 0.8},  # Conservador
+            2: {"rsi_min": 30, "rsi_max": 90, "min_atr": 0.2, "volume_multiplier": 0.7},
+            3: {"rsi_min": 25, "rsi_max": 85, "min_atr": 0.1, "volume_multiplier": 0.6},
+            4: {"rsi_min": 20, "rsi_max": 80, "min_atr": 0.05, "volume_multiplier": 0.5},
+            5: {"rsi_min": 15, "rsi_max": 75, "min_atr": 0.01, "volume_multiplier": 0.4},  # Intermedio
+            6: {"rsi_min": 10, "rsi_max": 70, "min_atr": 0.01, "volume_multiplier": 0.3},
+            7: {"rsi_min": 5, "rsi_max": 65, "min_atr": 0.01, "volume_multiplier": 0.2},
+            8: {"rsi_min": 0, "rsi_max": 60, "min_atr": 0.01, "volume_multiplier": 0.1},
+            9: {"rsi_min": 0, "rsi_max": 55, "min_atr": 0.01, "volume_multiplier": 0.05},
+            10: {"rsi_min": 0, "rsi_max": 50, "min_atr": 0.01, "volume_multiplier": 0.01} # Permisivo
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        # --- Asignación de parámetros ---
+        self.ema_slow = config.get("ema_slow", 20)
+        self.ema_fast = config.get("ema_fast", 9)
+        self.ema_long_trend_period = config.get("ema_long_trend_period", 50)
+        self.rsi_period = config.get("rsi_period", 7)
+        self.volume_lookback = config.get("volume_lookback", 5)
+        self.atr_period = config.get("atr_period", 14)
+        self.min_atr = config.get("min_atr", level_params["min_atr"])
+        self.sl_multiplier = config.get("sl_multiplier", 1.5) # Añadido
+        self.tp_multiplier = config.get("tp_multiplier", 1.0) # Añadido
+        self.volume_multiplier = config.get("volume_multiplier", level_params["volume_multiplier"]) # Añadido
+
+        # --- Parámetros ajustados por agresividad ---
+        self.rsi_min_level = config.get("rsi_min_level", level_params["rsi_min"])
+        self.rsi_max_level = config.get("rsi_max_level", level_params["rsi_max"])
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        detailed_status = {
+            "data_5m_ok": False,
+            "data_1m_ok": False,
+            "volatility_ok": False,
+            "volatility_reason": "",
+            "uptrend_5m_ok": False,
+            "uptrend_5m_reason": "",
+            "long_trend_ok": False, # NEW
+            "pullback_rebound_ok": False,
+            "pullback_rebound_reason": "",
+            "rsi_healthy_ok": False,
+            "rsi_healthy_reason": "",
+            "volume_strong_ok": False,
+            "volume_strong_reason": "",
+            "macd_bullish_ok": False,
+            "macd_bullish_reason": "",
+            "current_price": 0.0,
+            "ema_fast_5m": 0.0,
+            "ema_slow_5m": 0.0,
+            "atr_5m": 0.0,
+            "rsi_1m": 0.0,
+            "macd_1m": 0.0,
+            "macd_signal_1m": 0.0,
+            "volume_1m": 0.0,
+            "volume_avg_1m": 0.0,
+            "prev_volume_1m": 0.0,
+            "error": ""
+        }
+        try:
+            # Datos 5m para tendencia y ATR
+            limit_5m = max(self.ema_slow, self.atr_period, self.ema_long_trend_period) + 50 # Update limit_5m
+            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            df_5m = normalize_klines(prices_5m, min_length=limit_5m - 10)
+            if df_5m.empty:
+                detailed_status["data_5m_ok"] = False
+                detailed_status["error"] = "Datos 5m insuficientes."
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+            detailed_status["data_5m_ok"] = True
+
+            # Datos 1m para pullback y señal
+            limit_1m = max(self.ema_fast, self.rsi_period, self.volume_lookback) + 50
+            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            df_1m = normalize_klines(prices_1m, min_length=limit_1m - 10)
+            if df_1m.empty:
+                detailed_status["data_1m_ok"] = False
+                detailed_status["error"] = "Datos 1m insuficientes."
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+            detailed_status["data_1m_ok"] = True
+
+            # EMAs en 5m
+            df_5m = add_ema(df_5m, self.ema_slow)
+            df_5m = add_ema(df_5m, self.ema_fast)
+            df_5m = add_ema(df_5m, self.ema_long_trend_period) # NEW EMA calculation
+
+            # ATR en 5m
+            df_5m["ATR"] = ta.volatility.AverageTrueRange(
+                high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.atr_period
+            ).average_true_range()
+
+            # EMAs y RSI en 1m
+            df_1m = add_ema(df_1m, self.ema_fast)
+            df_1m = add_ema(df_1m, self.ema_slow)
+            df_1m = add_rsi(df_1m, self.rsi_period)
+            df_1m['volume_avg'] = df_1m['volume'].rolling(window=self.volume_lookback).mean()
+
+            # MACD en 1m
+            macd = ta.trend.MACD(df_1m['close'], window_slow=26, window_fast=12, window_sign=9)
+            df_1m['MACD'] = macd.macd()
+            df_1m['MACD_Signal'] = macd.macd_signal()
+
+            latest_5m = df_5m.iloc[-1]
+            latest_1m = df_1m.iloc[-1]
+            prev_1m = df_1m.iloc[-2]
+
+            detailed_status["current_price"] = latest_1m['close']
+
+            # --- Filtros --- 
+            # 1. Filtro de volatilidad (ATR en 5m)
+            if pd.isna(latest_5m["ATR"]) or latest_5m["ATR"] < self.min_atr:
+                detailed_status["volatility_ok"] = False
+                detailed_status["volatility_reason"] = f"Volatilidad insuficiente (ATR={latest_5m['ATR']:.2f} < {self.min_atr})"
+                return {"signal": "HOLD", "message": f"Volatilidad (ATR {latest_5m['ATR']:.2f} < Min ATR {self.min_atr:.2f}): {'✅' if detailed_status['volatility_ok'] else '❌'}", "detailed_status": detailed_status}
+            detailed_status["volatility_ok"] = True
+
+            # 2. Filtro de tendencia alcista fuerte en 5m (EMA fast > EMA slow)
+            uptrend_5m = latest_5m[f"EMA{self.ema_fast}"] > latest_5m[f"EMA{self.ema_slow}"]
+            if not uptrend_5m:
+                detailed_status["uptrend_5m_ok"] = False
+                detailed_status["uptrend_5m_reason"] = f"Tendencia 5m no alcista (EMA{self.ema_fast}: {latest_5m[f'EMA{self.ema_fast}']:.2f} <= EMA{self.ema_slow}: {latest_5m[f'EMA{self.ema_slow}']:.2f})"
+                return {"signal": "HOLD", "message": f"Tendencia 5m (EMA{self.ema_fast}: {latest_5m[f'EMA{self.ema_fast}']:.2f} > EMA{self.ema_slow}: {latest_5m[f'EMA{self.ema_slow}']:.2f}): {'✅' if detailed_status['uptrend_5m_ok'] else '❌'}", "detailed_status": detailed_status}
+            detailed_status["uptrend_5m_ok"] = True
+
+            # 3. NUEVO: Filtro de tendencia a largo plazo en 5m (precio > EMA de tendencia larga)
+            long_trend = latest_5m['close'] > latest_5m[f"EMA{self.ema_long_trend_period}"]
+            if not long_trend:
+                detailed_status["long_trend_ok"] = False
+                detailed_status["error"] = f"Precio por debajo de la EMA de tendencia larga ({self.ema_long_trend_period})."
+                # Construir mensaje detallado para el estado HOLD (tendencia larga)
+                hold_message_parts = []
+                hold_message_parts.append(f"Tendencia Larga (Precio 5m: {latest_5m['close']:.2f} > EMA{self.ema_long_trend_period}: {latest_5m[f'EMA{self.ema_long_trend_period}']:.2f}): {'✅' if detailed_status['long_trend_ok'] else '❌'}")
+                final_hold_message = " | ".join(hold_message_parts)
+                return {"signal": "HOLD", "message": final_hold_message, "detailed_status": detailed_status}
+            detailed_status["long_trend_ok"] = True
+
+            # 4. Condición de pullback más estricta en 1m (mecha toca EMA, cierre por encima, vela verde)
+            pullback_rebound = (
+                latest_1m["low"] <= latest_1m[f"EMA{self.ema_fast}"] # La vela toca o cruza la EMA
+                and latest_1m["close"] > latest_1m[f"EMA{self.ema_fast}"] # La vela actual cierra por encima de la EMA
+            )
+            if not pullback_rebound:
+                detailed_status["pullback_rebound_ok"] = False
+                detailed_status["pullback_rebound_reason"] = f"Esperando pullback válido en 1m (Precio {latest_1m['close']:.2f}, EMA{self.ema_fast} {latest_1m[f'EMA{self.ema_fast}']:.2f})"
+                return {"signal": "HOLD", "message": f"Pullback (Precio {latest_1m['close']:.2f}, EMA{self.ema_fast} {latest_1m[f'EMA{self.ema_fast}']:.2f}): {'✅' if detailed_status['pullback_rebound_ok'] else '❌'}", "detailed_status": detailed_status}
+            detailed_status["pullback_rebound_ok"] = True
+
+            # 5. Filtro RSI (evitar sobrecompra)
+            is_rsi_healthy = self.rsi_min_level < latest_1m['RSI'] < self.rsi_max_level
+            if not is_rsi_healthy:
+                detailed_status["rsi_healthy_ok"] = False
+                detailed_status["rsi_healthy_reason"] = f"RSI fuera de rango saludable ({latest_1m['RSI']:.2f}) (Min: {self.rsi_min_level}, Max: {self.rsi_max_level})"
+                return {"signal": "HOLD", "message": f"RSI Saludable (RSI {latest_1m['RSI']:.2f} entre {self.rsi_min_level} y {self.rsi_max_level}): {'✅' if detailed_status['rsi_healthy_ok'] else '❌'}", "detailed_status": detailed_status}
+            detailed_status["rsi_healthy_ok"] = True
+
+            # 6. Filtro de volumen (mayor que promedio y mayor que vela previa)
+            is_volume_strong = latest_1m['volume'] > latest_1m['volume_avg'] * self.volume_multiplier and latest_1m['volume'] > prev_1m['volume']
+            if not is_volume_strong:
+                detailed_status["volume_strong_ok"] = False
+                detailed_status["volume_strong_reason"] = f"Volumen no fuerte (Actual: {latest_1m['volume']:.2f}, Promedio: {latest_1m['volume_avg']:.2f}, Anterior: {prev_1m['volume']:.2f})"
+                return {"signal": "HOLD", "message": f"Volumen Fuerte (Actual: {latest_1m['volume']:.2f}, Promedio: {latest_1m['volume_avg']:.2f}, Anterior: {prev_1m['volume']:.2f}): {'✅' if detailed_status['volume_strong_ok'] else '❌'}", "detailed_status": detailed_status}
+            detailed_status["volume_strong_ok"] = True
+
+            # 7. Confirmación MACD (Cruce alcista en las últimas 3 velas)
+            is_macd_bullish = any(df_1m['MACD'].iloc[-i] > df_1m['MACD_Signal'].iloc[-i] and df_1m['MACD'].iloc[-i-1] < df_1m['MACD_Signal'].iloc[-i-1] for i in range(1, 4))
+            if not is_macd_bullish:
+                detailed_status["macd_bullish_ok"] = False
+                detailed_status["macd_bullish_reason"] = f"MACD no alcista (MACD: {latest_1m['MACD']:.2f}, Signal: {latest_1m['MACD_Signal']:.2f})"
+                return {"signal": "HOLD", "message": f"MACD Alcista (MACD: {latest_1m['MACD']:.2f}, Signal: {latest_1m['MACD_Signal']:.2f}): {'✅' if detailed_status['macd_bullish_ok'] else '❌'}", "detailed_status": detailed_status}
+            detailed_status["macd_bullish_ok"] = True
+
+            # Calcular SL y TP basados en ATR
+            sl_pct = 0.0
+            tp_pct = 0.0
+            if not df_5m.empty and not pd.isna(latest_5m["ATR"]): # Usar ATR de 5m para SL/TP
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100 # Usar latest_1m['close'] para el cálculo del porcentaje
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100
+            detailed_status["sl_pct"] = sl_pct
+            detailed_status["tp_pct"] = tp_pct
+
+            # --- Señal de compra válida ---
+            entry = latest_1m["close"]
+
+            return {
+                "signal": "BUY",
+                "message": "Pullback confirmado con filtros múltiples",
+                "entry": entry,
+                "sl_pct": sl_pct,
+                "tp_pct": tp_pct,
+                "detailed_status": detailed_status
+            }
+
+        except Exception as e:
+            logger.error(f"LadisLong error: {str(e)}")
+            detailed_status["error"] = str(e)
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+
+--- Código de la estrategia: LadisLongLite ---
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi
+import pandas as pd
+import ta
+import logging
+from strategies.base import BaseStrategy # Añadido
+
+logger = logging.getLogger(__name__)
+
+class LadisLongLite(BaseStrategy): # Heredar de BaseStrategy
+    """Versión Lite de LadisLong: pullback a EMA + RSI saludable, condiciones flexibles y SL/TP dinámico por ATR."""
+
+    def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level) # Llamada al constructor de la clase base
+        # El resto del código de __init__ se mantiene igual
+
+        # --- Parámetros por agresividad ---
+        agg_levels = {
+            1: {"rsi_min": 35, "rsi_max": 95, "required_conditions": 10, "min_atr": 0.3, "volume_multiplier": 0.8, "min_ema_spread_pct": 0.05},
+            2: {"rsi_min": 30, "rsi_max": 90, "required_conditions": 9, "min_atr": 0.2, "volume_multiplier": 0.7, "min_ema_spread_pct": 0.04},
+            3: {"rsi_min": 25, "rsi_max": 85, "required_conditions": 9, "min_atr": 0.1, "volume_multiplier": 0.6, "min_ema_spread_pct": 0.03},
+            4: {"rsi_min": 20, "rsi_max": 80, "required_conditions": 8, "min_atr": 0.05, "volume_multiplier": 0.5, "min_ema_spread_pct": 0.02},
+            5: {"rsi_min": 15, "rsi_max": 75, "required_conditions": 8, "min_atr": 0.01, "volume_multiplier": 0.4, "min_ema_spread_pct": 0.01},
+            6: {"rsi_min": 10, "rsi_max": 70, "required_conditions": 7, "min_atr": 0.01, "volume_multiplier": 0.3, "min_ema_spread_pct": 0.01},
+            7: {"rsi_min": 5, "rsi_max": 65, "required_conditions": 7, "min_atr": 0.01, "volume_multiplier": 0.2, "min_ema_spread_pct": 0.01},
+            8: {"rsi_min": 0, "rsi_max": 60, "required_conditions": 6, "min_atr": 0.01, "volume_multiplier": 0.1, "min_ema_spread_pct": 0.01},
+            9: {"rsi_min": 0, "rsi_max": 55, "required_conditions": 6, "min_atr": 0.01, "volume_multiplier": 0.05, "min_ema_spread_pct": 0.01},
+            10: {"rsi_min": 0, "rsi_max": 50, "required_conditions": 6, "min_atr": 0.01, "volume_multiplier": 0.01, "min_ema_spread_pct": 0.01}
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        # --- Configuración ---
+        self.ema_slow = config.get("ema_slow", 26)
+        self.ema_fast = config.get("ema_fast", 12)
+        self.ema_long_trend_period = config.get("ema_long_trend_period", 50)
+        self.rsi_period = config.get("rsi_period", 7)
+        self.volume_lookback = config.get("volume_lookback", 5)
+        self.atr_period = config.get("atr_period", 14)
+        self.adx_period = config.get("adx_period", 14)
+        self.adx_threshold = config.get("adx_threshold", 20)
+        self.min_atr = config.get("min_atr", level_params["min_atr"])
+        self.volume_multiplier = config.get("volume_multiplier", level_params["volume_multiplier"])
+        self.min_ema_spread_pct = config.get("min_ema_spread_pct", level_params["min_ema_spread_pct"])
+        self.sl_multiplier = config.get("sl_multiplier", 2.0) # Añadido
+        self.tp_multiplier = config.get("tp_multiplier", 0.8) # Añadido
+
+        self.rsi_min_level = config.get("rsi_min_level", level_params["rsi_min"])
+        self.rsi_max_level = config.get("rsi_max_level", level_params["rsi_max"])
+        self.required_conditions = config.get("required_conditions", level_params["required_conditions"]) # Nuevo
+        self.atr_sma_period = config.get("atr_sma_period", 20)
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        detailed_status = { "error": "" }
+        sl_pct = 0.0 # Inicializar
+        tp_pct = 0.0 # Inicializar
+        try:
+            # --- Datos 5m ---
+            limit_5m = max(self.ema_slow, self.atr_period, self.ema_long_trend_period, self.adx_period) + 50 # Update limit_5m
+            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            df_5m = normalize_klines(prices_5m, min_length=limit_5m - 10)
+            if df_5m.empty:
+                return {"signal": "HOLD", "message": f"Datos 5m insuficientes para {symbol}. Se requieren {limit_5m} velas.", "detailed_status": detailed_status}
+
+            # --- Datos 1m ---
+            limit_1m = max(self.ema_fast, self.rsi_period, self.volume_lookback) + 51
+            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            df_1m = normalize_klines(prices_1m, min_length=limit_1m - 10)
+            if df_1m.empty:
+                return {"signal": "HOLD", "message": f"Datos 1m insuficientes para {symbol}. Se requieren {limit_1m} velas.", "detailed_status": detailed_status}
+
+            # --- Indicadores 5m ---
+            df_5m = add_ema(df_5m, self.ema_slow)
+            df_5m = add_ema(df_5m, self.ema_fast)
+            df_5m = add_ema(df_5m, self.ema_long_trend_period)
+            df_5m["ATR"] = ta.volatility.AverageTrueRange(
+                high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.atr_period
+            ).average_true_range()
+            df_5m["ATR_SMA"] = df_5m["ATR"].rolling(window=self.atr_sma_period).mean()
+            adx_indicator = ta.trend.ADXIndicator(high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.adx_period)
+            df_5m['ADX'] = adx_indicator.adx()
+
+
+            # --- Indicadores 1m ---
+            df_1m = add_ema(df_1m, self.ema_fast)
+            df_1m = add_ema(df_1m, self.ema_slow)
+            df_1m = add_rsi(df_1m, self.rsi_period)
+            df_1m["volume_avg"] = df_1m["volume"].rolling(window=self.volume_lookback).mean()
+            macd = ta.trend.MACD(df_1m['close'])
+            df_1m['MACD'] = macd.macd()
+            df_1m['MACD_Signal'] = macd.macd_signal()
+
+            # --- Últimas velas ---
+            latest_5m = df_5m.iloc[-1]
+            prev_5m = df_5m.iloc[-2] # Para la pendiente de la EMA
+            latest_1m = df_1m.iloc[-1]
+            prev_1m = df_1m.iloc[-2]
+
+            # --- Condiciones ---
+            cond_volatility = not pd.isna(latest_5m["ATR"]) and latest_5m["ATR"] >= self.min_atr
+            cond_uptrend = latest_5m[f"EMA{self.ema_fast}"] > latest_5m[f"EMA{self.ema_slow}"]
+            cond_longtrend = latest_5m["close"] > latest_5m[f"EMA{self.ema_long_trend_period}"]
+            
+            # Pullback a EMA (1m) con confirmación de vela siguiente
+            cond_pullback = (
+                prev_1m["low"] <= prev_1m[f"EMA{self.ema_fast}"] # La vela previa toca o cruza la EMA
+                and latest_1m["close"] > latest_1m[f"EMA{self.ema_fast}"] # La vela actual cierra por encima de la EMA
+            )
+            
+            cond_rsi = self.rsi_min_level < latest_1m["RSI"] < self.rsi_max_level
+            cond_volume = latest_1m["volume"] > latest_1m["volume_avg"] * self.volume_multiplier
+            cond_macd = latest_1m["MACD"] > latest_1m["MACD_Signal"]
+            cond_atr_sma = latest_5m["ATR"] > latest_5m["ATR_SMA"]
+            cond_adx = latest_5m["ADX"] > self.adx_threshold
+            
+            # NUEVO: Filtro de Mercado Lateral (Choppiness)
+            ema_spread_pct = abs(latest_5m[f"EMA{self.ema_fast}"] - latest_5m[f"EMA{self.ema_slow}"]) / latest_5m['close'] * 100
+            cond_choppiness = ema_spread_pct > self.min_ema_spread_pct
+            
+            # NUEVO: Filtro de Pendiente de Tendencia Larga
+            cond_long_trend_slope = latest_5m[f"EMA{self.ema_long_trend_period}"] > prev_5m[f"EMA{self.ema_long_trend_period}"]
+
+            # Guardar estados
+            detailed_status.update({
+                "ATR": latest_5m["ATR"], "ATR_SMA": latest_5m["ATR_SMA"],
+                "RSI": latest_1m["RSI"], "MACD": latest_1m["MACD"], "MACD_Signal": latest_1m["MACD_Signal"], 
+                "volume": latest_1m["volume"], "volume_avg": latest_1m["volume_avg"],
+                "cond_volatility": cond_volatility, "cond_uptrend": cond_uptrend,
+                "cond_longtrend": cond_longtrend, "cond_pullback": cond_pullback,
+                "cond_rsi": cond_rsi, "cond_volume": cond_volume, "cond_macd": cond_macd,
+                "cond_atr_sma": cond_atr_sma,
+                "cond_adx": cond_adx,
+                "cond_choppiness": cond_choppiness, # Nuevo
+                "cond_long_trend_slope": cond_long_trend_slope, # Nuevo
+                "ema_spread_pct": ema_spread_pct, # Nuevo
+                "required_conditions": self.required_conditions # Nuevo
+            })
+
+            # --- Entrada flexible ---
+            conditions = [
+                cond_volatility, cond_uptrend, cond_longtrend, cond_pullback, 
+                cond_rsi, cond_volume, cond_macd, cond_atr_sma,
+                cond_choppiness, cond_long_trend_slope, cond_adx
+            ]
+            conditions_met = sum(conditions)
+            
+            # Calcular SL y TP basados en ATR
+            if not df_5m.empty and not pd.isna(latest_5m["ATR"]): # Usar ATR de 5m para SL/TP
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100 # Usar latest_1m['close'] para el cálculo del porcentaje
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100
+            detailed_status["sl_pct"] = sl_pct
+            detailed_status["tp_pct"] = tp_pct
+
+            if conditions_met >= self.required_conditions:
+                entry = latest_1m["close"]
+                return {
+                    "signal": "BUY",
+                    "message": f"Pullback confirmado con {conditions_met}/{len(conditions)} señales (Req: {self.required_conditions}).",
+                    "entry": entry,
+                    "sl_pct": sl_pct,
+                    "tp_pct": tp_pct,
+                    "detailed_status": detailed_status
+                }
+
+            return {
+                "signal": "HOLD",
+                "message": f"Condiciones insuficientes ({conditions_met}/{len(conditions)}, Req: {self.required_conditions}). " +
+                           f"Volatilidad (ATR {detailed_status['ATR']:.2f} >= Min ATR {self.min_atr:.2f}): {'✅' if cond_volatility else '❌'} | " +
+                           f"Tendencia Alcista (EMA{self.ema_fast} > EMA{self.ema_slow}): {'✅' if cond_uptrend else '❌'} | " +
+                           f"Tendencia Larga (Close > EMA{self.ema_long_trend_period}): {'✅' if cond_longtrend else '❌'} | " +
+                           f"Pullback (Vela previa roja, vela actual verde, ambas cerca de EMA{self.ema_fast}): {'✅' if cond_pullback else '❌'} | " +
+                           f"RSI Saludable ({self.rsi_min_level} < RSI {detailed_status['RSI']:.2f} < {self.rsi_max_level}): {'✅' if cond_rsi else '❌'} | " +
+                           f"Volumen Fuerte (Actual {detailed_status['volume']:.2f} > Promedio {detailed_status['volume_avg']:.2f} * {self.volume_multiplier}): {'✅' if cond_volume else '❌'} | " +
+                           f"MACD Alcista (MACD {detailed_status['MACD']:.2f} > Signal {detailed_status['MACD_Signal']:.2f}): {'✅' if cond_macd else '❌'} | " +
+                           f"ATR > ATR_SMA (ATR {detailed_status['ATR']:.2f} > ATR_SMA {detailed_status['ATR_SMA']:.2f}): {'✅' if cond_atr_sma else '❌'} | " +
+                           f"ADX > Threshold (ADX {latest_5m['ADX']:.2f} > {self.adx_threshold}): {'✅' if cond_adx else '❌'} | " +
+                           f"No Choppy (EMA Spread {detailed_status['ema_spread_pct']:.2f}% > {self.min_ema_spread_pct:.2f}%): {'✅' if cond_choppiness else '❌'} | " +
+                           f"Pendiente Tendencia Larga (EMA{self.ema_long_trend_period} actual > previa): {'✅' if cond_long_trend_slope else '❌'}",
+                "detailed_status": detailed_status
+            }
+
+        except Exception as e:
+            logger.error(f"LadisLongLite error: {str(e)}")
+            detailed_status["error"] = str(e)
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+
+--- Código de la estrategia: Sabado ---
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi, scale_aggressiveness
+import pandas as pd
+import ta
+from strategies.base import BaseStrategy # Añadido
+
+class Sabado(BaseStrategy): # Heredar de BaseStrategy
+    def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level) # Llamada al constructor de la clase base
+        # El resto del código de __init__ se mantiene igual
+
+        # --- Definición de parámetros por nivel de agresividad ---
+        agg_levels = {
+            1: {"rsi_ob": 50},  # Conservador
+            2: {"rsi_ob": 53},
+            3: {"rsi_ob": 56},
+            4: {"rsi_ob": 59},
+            5: {"rsi_ob": 62},  # Intermedio
+            6: {"rsi_ob": 65},
+            7: {"rsi_ob": 68},
+            8: {"rsi_ob": 71},
+            9: {"rsi_ob": 74},
+            10: {"rsi_ob": 77} # Permisivo
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        # --- Asignación de parámetros ---
+        self.ema_long_period = config.get('ema_long_period', 200)
+        self.ema_medium_period = config.get('ema_medium_period', 50)
+        self.ema_short_period = config.get('ema_short_period', 20)
+        self.ema_slow_period = config.get('ema_slow_period', 50)
+        self.rsi_period = config.get('rsi_period', 14)
+        self.volume_ema_period = config.get('volume_ema_period', 20)
+        self.volume_multiplier = config.get('volume_multiplier', 1.5)
+        self.max_atr_threshold = config.get('max_atr_threshold', 0.01)
+
+
+        # --- Parámetros ajustados por agresividad ---
+        self.rsi_overbought_threshold = config.get('rsi_overbought_threshold', level_params["rsi_ob"])
+        self.atr_period = config.get("atr_period", 14) # Añadido
+        self.sl_multiplier = config.get("sl_multiplier", 0.8) # Añadido
+        self.tp_multiplier = config.get("tp_multiplier", 1.2) # Añadido
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        detailed_status = {
+            "data_5m_ok": False,
+            "data_1m_ok": False,
+            "is_downtrend": False,
+            "is_pullback": False,
+            "rsi_confirm": False,
+            "macd_confirm": False,
+            "entry_candle_confirm": False,
+            "volume_confirm": False,
+            "min_volatility_ok": False,
+            "max_volatility_ok": False,
+            "current_price": 0.0,
+            "ema_long_5m": 0.0,
+            "ema_medium_5m": 0.0,
+            "ema_short_5m": 0.0,
+            "rsi_1m": 0.0,
+            "prev_rsi_1m": 0.0,
+            "macd_1m": 0.0,
+            "macd_signal_1m": 0.0,
+            "prev_macd_1m": 0.0,
+            "prev_macd_signal_1m": 0.0,
+            "error": ""
+        }
+
+        try:
+            # Get 5m klines for downtrend and pullback detection
+            prices_5m = binance_data_provider.get_historical_klines("BTCUSDT", "5m", limit=self.ema_long_period + 50).get("prices", [])
+            df_5m = normalize_klines(prices_5m, min_length=self.ema_long_period + 5)
+            if df_5m.empty:
+                detailed_status["data_5m_ok"] = False
+                detailed_status["error"] = "Datos 5m insuficientes."
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+            detailed_status["data_5m_ok"] = True
+
+            df_5m = add_ema(df_5m, self.ema_long_period)
+            df_5m = add_ema(df_5m, self.ema_medium_period)
+            df_5m = add_ema(df_5m, self.ema_short_period)
+            df_5m["ATR"] = ta.volatility.AverageTrueRange(high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.atr_period).average_true_range() # Añadido
+            df_5m[f'volume_ema_{self.volume_ema_period}'] = df_5m['volume'].ewm(span=self.volume_ema_period, adjust=False).mean()
+
+
+            latest_5m = df_5m.iloc[-1]
+            prev_5m = df_5m.iloc[-2]
+
+            detailed_status["current_price"] = latest_5m['close']
+            detailed_status["ema_long_5m"] = latest_5m[f'EMA{self.ema_long_period}']
+            detailed_status["ema_medium_5m"] = latest_5m[f'EMA{self.ema_medium_period}']
+            detailed_status["ema_short_5m"] = latest_5m[f'EMA{self.ema_short_period}']
+
+            # 1. Downtrend Detection
+            is_downtrend = (
+                latest_5m['close'] <= detailed_status["ema_medium_5m"] * 1.005 and # Close cerca o por debajo de EMA media (Relajado)
+                detailed_status["ema_short_5m"] < detailed_status["ema_medium_5m"]
+            )
+            detailed_status["is_downtrend"] = is_downtrend
+            if not is_downtrend:
+                return {"signal": "HOLD", "message": f"Tendencia Bajista (Close {latest_5m['close']:.2f} < EMA{self.ema_medium_period} {latest_5m[f'EMA{self.ema_medium_period}']:.2f}): {'✅' if is_downtrend else '❌'}", "detailed_status": detailed_status}
+
+            # 2. Pullback Detection
+            is_pullback = (
+                latest_5m['close'] >= detailed_status["ema_short_5m"] * 0.99 and # Cierre cerca o por encima de EMA corta (Relajado)
+                latest_5m['close'] < detailed_status["ema_medium_5m"] * 1.005 # Cierre cerca o por debajo de EMA media
+            )
+            detailed_status["is_pullback"] = is_pullback
+            if not is_pullback:
+                detailed_status["is_pullback"] = False
+                detailed_status["error"] = "No hay retroceso detectado dentro de la tendencia bajista."
+                return {"signal": "HOLD", "message": f"Pullback (Close {latest_5m['close']:.2f} entre EMA{self.ema_short_period} {detailed_status['ema_short_5m']:.2f} y EMA{self.ema_medium_period} {detailed_status['ema_medium_5m']:.2f}): {'✅' if is_pullback else '❌'}", "detailed_status": detailed_status}
+
+            # Get 1m klines for confirmation indicators
+            prices_1m = binance_data_provider.get_historical_klines("BTCUSDT", "1m", limit=self.rsi_period + 50).get("prices", [])
+            df_1m = normalize_klines(prices_1m, min_length=self.rsi_period + 5)
+            if df_1m.empty:
+                detailed_status["data_1m_ok"] = False
+                detailed_status["error"] = "Datos 1m insuficientes."
+                return {"signal": "HOLD", "message": detailed_status["error"], "detailed_status": detailed_status}
+            detailed_status["data_1m_ok"] = True
+
+            df_1m = add_rsi(df_1m, self.rsi_period)
+            macd_1m = ta.trend.MACD(df_1m['close']); df_1m['MACD'] = macd_1m.macd(); df_1m['MACD_Signal'] = macd_1m.macd_signal()
+
+            latest_1m = df_1m.iloc[-1]
+            prev_1m = df_1m.iloc[-2]
+
+            detailed_status["rsi_1m"] = latest_1m['RSI']
+            detailed_status["prev_rsi_1m"] = prev_1m['RSI']
+            detailed_status["macd_1m"] = latest_1m['MACD']
+            detailed_status["macd_signal_1m"] = latest_1m['MACD_Signal']
+            detailed_status["prev_macd_1m"] = prev_1m['MACD']
+            detailed_status["prev_macd_signal_1m"] = prev_1m['MACD_Signal']
+
+            # 3. Confirmation for Pullback End / Downtrend Continuation (Entry Signal)
+            # RSI confirmation: RSI was overbought/near overbought and is now turning down
+            rsi_confirm = (
+                detailed_status["rsi_1m"] < self.rsi_overbought_threshold
+            )
+            detailed_status["rsi_confirm"] = rsi_confirm
+
+            # MACD confirmation: Bearish crossover on 1m in the last 3 candles
+            macd_confirm = any(df_1m['MACD'].iloc[-i] < df_1m['MACD_Signal'].iloc[-i] and df_1m['MACD'].iloc[-i-1] > df_1m['MACD_Signal'].iloc[-i-1] for i in range(1, 4))
+            detailed_status["macd_confirm"] = macd_confirm
+
+            # Entry candle confirmation: Current 5m candle closes bearish and below EMA50
+            entry_candle_confirm = (
+                latest_5m['close'] <= latest_5m['open'] * 1.005 and # Vela bajista o casi bajista (Relajado)
+                latest_5m['close'] < detailed_status["ema_medium_5m"] * 1.005 # Cierre cerca o por debajo de EMA media
+            )
+            detailed_status["entry_candle_confirm"] = entry_candle_confirm
+
+            # Volume Confirmation
+            volume_confirm = latest_5m['volume'] > df_5m[f'volume_ema_{self.volume_ema_period}'].iloc[-2] * self.volume_multiplier
+            detailed_status["volume_confirm"] = volume_confirm
+            
+            # Volatility Filter
+            min_volatility_ok = latest_5m["ATR"] / latest_5m['close'] > self.min_atr_threshold
+            detailed_status["min_volatility_ok"] = min_volatility_ok
+            max_volatility_ok = latest_5m["ATR"] / latest_5m['close'] < self.max_atr_threshold
+            detailed_status["max_volatility_ok"] = max_volatility_ok
+
+            # Calcular SL y TP basados en ATR
+            sl_pct = 0.0
+            tp_pct = 0.0
+            if not pd.isna(latest_5m["ATR"]):
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+            detailed_status["sl_pct"] = sl_pct
+            detailed_status["tp_pct"] = tp_pct
+
+            # Final SELL signal
+            main_conditions = [is_downtrend, is_pullback, rsi_confirm, macd_confirm, entry_candle_confirm, volume_confirm, min_volatility_ok, max_volatility_ok]
+            if sum(main_conditions) >= 8:
+                entry_price = latest_5m['close']
+
+                return {
+                    "signal": "SELL",
+                    "message": f"Venta detectada: Retroceso en tendencia bajista finalizado con {sum(main_conditions)}/8 confirmaciones.",
+                    "entry": entry_price,
+                    "sl_pct": sl_pct,
+                    "tp_pct": tp_pct,
+                    "detailed_status": detailed_status
+                }
+            
+            detailed_status["error"] = "Condiciones de entrada no cumplidas."
+            hold_message_parts = []
+            hold_message_parts.append(f"Tendencia Bajista (Close {latest_5m['close']:.2f} < EMA{self.ema_medium_period} {detailed_status['ema_medium_5m']:.2f}): {'✅' if detailed_status['is_downtrend'] else '❌'}")
+            hold_message_parts.append(f"Pullback (Close {latest_5m['close']:.2f} entre EMA{self.ema_short_period} {detailed_status['ema_short_5m']:.2f} y EMA{self.ema_medium_period} {detailed_status['ema_medium_5m']:.2f}): {'✅' if detailed_status['is_pullback'] else '❌'}")
+            hold_message_parts.append(f"RSI Confirmación (RSI {detailed_status['rsi_1m']:.2f} < OB {self.rsi_overbought_threshold:.2f}): {'✅' if detailed_status['rsi_confirm'] else '❌'}")
+            hold_message_parts.append(f"MACD Confirmación (Cruce bajista en últimas 3 velas): {'✅' if detailed_status['macd_confirm'] else '❌'}")
+            hold_message_parts.append(f"Vela Entrada Bajista (Close {latest_5m['close']:.2f} < Open {latest_5m['open']:.2f} y < EMA{self.ema_medium_period} {detailed_status['ema_medium_5m']:.2f}): {'✅' if detailed_status['entry_candle_confirm'] else '❌'}")
+            hold_message_parts.append(f"Confirmación de Volumen (Volumen {latest_5m['volume']:.2f} > EMA Volumen {df_5m[f'volume_ema_{self.volume_ema_period}'].iloc[-2]:.2f} * {self.volume_multiplier}): {'✅' if detailed_status['volume_confirm'] else '❌'}")
+            hold_message_parts.append(f"Volatilidad Mínima (ATR/Close {latest_5m['ATR'] / latest_5m['close']:.4f} > {self.min_atr_threshold:.4f}): {'✅' if detailed_status['min_volatility_ok'] else '❌'}")
+            hold_message_parts.append(f"Volatilidad Máxima (ATR/Close {latest_5m['ATR'] / latest_5m['close']:.4f} < {self.max_atr_threshold:.4f}): {'✅' if detailed_status['max_volatility_ok'] else '❌'}")
+
+            final_hold_message = " | ".join(hold_message_parts)
+            return {"signal": "HOLD", "message": f"Condiciones de entrada no cumplidas: {final_hold_message}", "detailed_status": detailed_status}
+
+        except Exception as e:
+            detailed_status["error"] = str(e)
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+--- Código de la estrategia: SabadoLite ---
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi
+import pandas as pd
+import ta
+from strategies.base import BaseStrategy
+
+class SabadoLite(BaseStrategy):
+    def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level)
+
+        agg_levels = {
+            1: {"rsi_ob": 70, "volume_multiplier": 1.2, "min_atr_threshold": 0.0006, "required_conditions": 6},
+            2: {"rsi_ob": 72, "volume_multiplier": 1.1, "min_atr_threshold": 0.0005, "required_conditions": 6},
+            3: {"rsi_ob": 74, "volume_multiplier": 1.0, "min_atr_threshold": 0.0005, "required_conditions": 5},
+            4: {"rsi_ob": 76, "volume_multiplier": 0.9, "min_atr_threshold": 0.0004, "required_conditions": 5},
+            5: {"rsi_ob": 78, "volume_multiplier": 0.8, "min_atr_threshold": 0.0004, "required_conditions": 4},
+            6: {"rsi_ob": 80, "volume_multiplier": 0.7, "min_atr_threshold": 0.0003, "required_conditions": 4},
+            7: {"rsi_ob": 82, "volume_multiplier": 0.6, "min_atr_threshold": 0.0003, "required_conditions": 3},
+            8: {"rsi_ob": 84, "volume_multiplier": 0.5, "min_atr_threshold": 0.0002, "required_conditions": 3},
+            9: {"rsi_ob": 86, "volume_multiplier": 0.4, "min_atr_threshold": 0.0002, "required_conditions": 2},
+            10: {"rsi_ob": 88, "volume_multiplier": 0.3, "min_atr_threshold": 0.0001, "required_conditions": 2}
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        self.ema_long_period = config.get('ema_long_period', 200)
+        self.ema_medium_period = config.get('ema_medium_period', 50)
+        self.ema_short_period = config.get('ema_short_period', 20)
+        self.rsi_period = config.get('rsi_period', 14)
+        self.atr_period = config.get('atr_period', 14)
+        self.atr_sma_period = config.get('atr_sma_period', 20)
+        self.volume_ema_period = config.get('volume_ema_period', 20)
+        self.volume_multiplier = config.get('volume_multiplier', level_params["volume_multiplier"])
+        self.min_atr_threshold = config.get('min_atr_threshold', level_params["min_atr_threshold"])
+        self.rsi_overbought_threshold = config.get('rsi_overbought_threshold', level_params["rsi_ob"])
+        self.required_conditions = config.get('required_conditions', level_params["required_conditions"])
+        self.sl_multiplier = config.get("sl_multiplier", 1.2)
+        self.tp_multiplier = config.get("tp_multiplier", 1.0)
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        detailed_status = {}
+        try:
+            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=self.ema_long_period + 50).get("prices", [])
+            df_5m = normalize_klines(prices_5m, min_length=self.ema_long_period + 5)
+            if df_5m.empty:
+                return {"signal": "HOLD", "message": "Datos 5m insuficientes.", "detailed_status": detailed_status}
+
+            df_5m = add_ema(df_5m, self.ema_long_period)
+            df_5m = add_ema(df_5m, self.ema_medium_period)
+            df_5m = add_ema(df_5m, self.ema_short_period)
+            df_5m["ATR"] = ta.volatility.AverageTrueRange(high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.atr_period).average_true_range()
+            df_5m["ATR_SMA"] = df_5m["ATR"].rolling(window=self.atr_sma_period).mean()
+            df_5m[f'volume_ema_{self.volume_ema_period}'] = df_5m['volume'].ewm(span=self.volume_ema_period, adjust=False).mean()
+
+            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=self.rsi_period + 50).get("prices", [])
+            df_1m = normalize_klines(prices_1m, min_length=self.rsi_period + 5)
+            if df_1m.empty:
+                return {"signal": "HOLD", "message": "Datos 1m insuficientes.", "detailed_status": detailed_status}
+
+            df_1m = add_rsi(df_1m, self.rsi_period)
+            macd_1m = ta.trend.MACD(df_1m['close'])
+            df_1m['MACD'] = macd_1m.macd()
+            df_1m['MACD_Signal'] = macd_1m.macd_signal()
+            df_1m['MACD_Hist'] = macd_1m.macd_diff()
+
+            latest_5m = df_5m.iloc[-1]
+            latest_1m = df_1m.iloc[-1]
+            prev_1m = df_1m.iloc[-2]
+
+            is_downtrend = latest_5m['close'] < latest_5m[f'EMA{self.ema_long_period}'] and latest_5m[f'EMA{self.ema_short_period}'] < latest_5m[f'EMA{self.ema_medium_period}']
+            is_pullback = latest_5m['close'] > latest_5m[f'EMA{self.ema_short_period}'] and latest_5m['close'] < latest_5m[f'EMA{self.ema_medium_period}']
+            rsi_confirm = prev_1m['RSI'] > self.rsi_overbought_threshold and latest_1m['RSI'] < self.rsi_overbought_threshold
+            macd_confirm = latest_1m['MACD_Hist'] < prev_1m['MACD_Hist']
+            entry_candle_confirm = latest_5m['close'] < latest_5m['open'] and latest_5m['close'] < latest_5m[f'EMA{self.ema_medium_period}']
+            volume_confirm = latest_5m['volume'] > df_5m[f'volume_ema_{self.volume_ema_period}'].iloc[-2] * self.volume_multiplier
+            min_volatility_ok = latest_5m["ATR"] / latest_5m['close'] > self.min_atr_threshold
+            atr_sma_ok = latest_5m["ATR"] > latest_5m["ATR_SMA"]
+
+            conditions = [is_downtrend, is_pullback, rsi_confirm, macd_confirm, entry_candle_confirm, volume_confirm, min_volatility_ok, atr_sma_ok]
+            conditions_met = sum(conditions)
+
+            if conditions_met >= self.required_conditions:
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+                return {"signal": "SELL", "sl_pct": sl_pct, "tp_pct": tp_pct, "detailed_status": detailed_status}
+
+            return {"signal": "HOLD", "message": f"Condiciones insuficientes ({conditions_met}/{len(conditions)})", "detailed_status": detailed_status}
+
+        except Exception as e:
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+--- Código de la estrategia: SheilalongLite ---
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi
+import pandas as pd
+import ta
+import logging
+from strategies.base import BaseStrategy # Añadido
+
+logger = logging.getLogger(__name__)
+
+class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: Added comment
+    """Estrategia SheilalongLite: Scalping de compra en tendencia alcista con pullback a EMA y confirmación de RSI/MACD."""
+
+    def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level) # Llamada al constructor de la clase base
+        # El resto del código de __init__ se mantiene igual
+
+        # --- Parámetros por nivel de agresividad ---
+        agg_levels = {
+            1: {"rsi_buy": 55},  # Conservador
+            2: {"rsi_buy": 52},
+            3: {"rsi_buy": 49},
+            4: {"rsi_buy": 46},
+            5: {"rsi_buy": 43},  # Intermedio
+            6: {"rsi_buy": 40},
+            7: {"rsi_buy": 37},
+            8: {"rsi_buy": 34},
+            9: {"rsi_buy": 31},
+            10: {"rsi_buy": 28} # Permisivo
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        # --- Configuración ---
+        self.opening_range_minutes = config.get("opening_range_minutes", 10)
+        self.ema_fast = config.get("ema_fast", 9)
+        self.ema_slow = config.get("ema_slow", 15)
+        self.ema_trend_period = config.get("ema_trend_period", 40)
+        self.rsi_period = config.get("rsi_period", 14)
+        self.volume_lookback = config.get("volume_lookback", 10)
+        self.volume_multiplier = config.get("volume_multiplier", 1.0)
+        self.atr_period = config.get("atr_period", 14)
+        self.adx_period = config.get("adx_period", 14)
+        self.adx_threshold = config.get("adx_threshold", 20)
+        self.macd_fast = config.get("macd_fast", 12)
+        self.macd_slow = config.get("macd_slow", 26)
+        self.macd_signal = config.get("macd_signal", 9)
+        self.atr_sma_period = config.get("atr_sma_period", 20) # New parameter for ATR average
+        self.sl_multiplier = config.get("sl_multiplier", 1.2)
+        self.tp_multiplier = config.get("tp_multiplier", 1.0)
+
+        # Umbral RSI dinámico
+        self.rsi_buy_threshold = config.get("rsi_buy_threshold", level_params["rsi_buy"])
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        sl_pct = 0.0
+        tp_pct = 0.0
+        detailed_status = {
+            "opening_range_high": 0.0,
+            "valid_breakout": False,
+            "rsi_ok": False,
+            "volume_strong": False,
+            "macd_ok": False,
+            "atr_ok": False,
+            "adx_ok": False,
+            "error": "",
+            "sl_pct": sl_pct,
+            "tp_pct": tp_pct
+        }
+        try:
+            # --- Datos 1m ---
+            limit_1m = max(self.opening_range_minutes, self.ema_slow, self.rsi_period, self.volume_lookback, self.macd_slow, self.atr_period, self.adx_period) + 30
+            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            df_1m = normalize_klines(prices_1m, min_length=limit_1m - 10)
+            if df_1m.empty:
+                detailed_status["error"] = "Datos 1m insuficientes."
+                return {"signal": "HOLD", "message": "Datos 1m insuficientes.", "detailed_status": detailed_status}
+
+            df_1m = add_ema(df_1m, self.ema_fast)
+            df_1m = add_ema(df_1m, self.ema_slow)
+            df_1m = add_rsi(df_1m, self.rsi_period)
+            df_1m["volume_avg"] = df_1m["volume"].rolling(window=self.volume_lookback).mean()
+            df_1m["MACD"] = ta.trend.macd(df_1m["close"], window_fast=self.macd_fast, window_slow=self.macd_slow)
+            df_1m["MACD_Signal"] = ta.trend.macd_signal(df_1m["close"], window_fast=self.macd_fast, window_slow=self.macd_slow, window_sign=self.macd_signal)
+            df_1m["ATR"] = ta.volatility.AverageTrueRange(high=df_1m["high"], low=df_1m["low"], close=df_1m["close"], window=self.atr_period).average_true_range()
+            adx_indicator = ta.trend.ADXIndicator(high=df_1m["high"], low=df_1m["low"], close=df_1m["close"], window=self.adx_period)
+            df_1m['ADX'] = adx_indicator.adx()
+
+            # --- Datos 5m ---
+            limit_5m = max(self.ema_slow, self.ema_trend_period, self.atr_period, self.atr_sma_period) + 30
+            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            df_5m = normalize_klines(prices_5m, min_length=limit_5m - 10)
+            if df_5m.empty:
+                detailed_status["error"] = f"Datos 5m insuficientes para {symbol}."
+                return {"signal": "HOLD", "message": f"Datos 5m insuficientes para {symbol}.", "detailed_status": detailed_status}
+
+            df_5m = add_ema(df_5m, self.ema_fast)
+            df_5m = add_ema(df_5m, self.ema_slow)
+            df_5m = add_ema(df_5m, self.ema_trend_period)
+            df_5m["ATR"] = ta.volatility.AverageTrueRange(high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.atr_period).average_true_range()
+            df_5m["ATR_SMA"] = df_5m["ATR"].rolling(window=self.atr_sma_period).mean()
+
+            # --- Últimos datos ---
+            latest_1m = df_1m.iloc[-1]
+            prev_1m = df_1m.iloc[-2]
+            latest_5m = df_5m.iloc[-1]
+
+            # --- Opening range ---
+            opening_range_high = df_1m["high"].iloc[:self.opening_range_minutes].max()
+            detailed_status["opening_range_high"] = opening_range_high
+
+            # --- Condiciones ---
+            valid_breakout = latest_1m["close"] > opening_range_high and prev_1m["close"] > opening_range_high
+            is_volume_strong = (latest_1m["volume"] > latest_1m["volume_avg"] * self.volume_multiplier)
+            is_rsi_ok = latest_1m["RSI"] > self.rsi_buy_threshold
+            macd_ok = latest_1m["MACD"] > latest_1m["MACD_Signal"] and prev_1m["MACD"] < prev_1m["MACD_Signal"]
+            atr_ok = latest_5m["ATR"] > latest_5m["ATR_SMA"]
+            adx_ok = latest_1m["ADX"] > self.adx_threshold
+
+            detailed_status.update({
+                "valid_breakout": valid_breakout,
+                "rsi_ok": is_rsi_ok,
+                "volume_strong": is_volume_strong,
+                "macd_ok": macd_ok,
+                "atr_ok": atr_ok,
+                "adx_ok": adx_ok
+            })
+
+            # --- Lógica de entrada ---
+            if valid_breakout and is_volume_strong:
+                optional_conditions = [is_rsi_ok, macd_ok, atr_ok, adx_ok]
+                if sum(optional_conditions) >= 2:
+                    entry = latest_1m["close"]
+
+                    # --- Gestión de Riesgo ---
+                    if not pd.isna(latest_1m["ATR"]):
+                        sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+                        tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+                    detailed_status["sl_pct"] = sl_pct
+                    detailed_status["tp_pct"] = tp_pct
+
+                    return {
+                        "signal": "BUY",
+                        "message": f"Ruptura alcista confirmada con {sum(optional_conditions) + 2}/6 condiciones.",
+                        "entry": entry,
+                        "sl_pct": sl_pct,
+                        "tp_pct": tp_pct,
+                        "detailed_status": detailed_status
+                    }
+
+            return {
+                "signal": "HOLD",
+                "message": f"Esperando condiciones suficientes. Breakout: {valid_breakout}, Volumen: {is_volume_strong}, Opcionales: {sum([is_rsi_ok, macd_ok, atr_ok, adx_ok])}/4.",
+                "detailed_status": detailed_status
+            }
+
+        except Exception as e:
+            logger.error(f"SheilalongLite error: {str(e)}")
+            detailed_status["error"] = str(e)
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+
+--- Código de la estrategia: SheilashortLite ---
+from utils.klines_utils import normalize_klines
+from utils.indicators import add_ema, add_rsi
+import pandas as pd
+import ta
+import logging
+from strategies.base import BaseStrategy # Añadido
+
+logger = logging.getLogger(__name__)
+
+class SheilashortLite(BaseStrategy): # Heredar de BaseStrategy
+    """Estrategia SheilashortLite: Scalping de venta en tendencia bajista con pullback a EMA y confirmación de RSI/MACD."""
+
+    def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level) # Llamada al constructor de la clase base
+        agg_levels = {
+            1: {"rsi_sell_max": 60, "required_conditions": 5, "min_atr_value": 0.8, "volume_multiplier": 1.2},
+            5: {"rsi_sell_max": 75, "required_conditions": 4, "min_atr_value": 0.5, "volume_multiplier": 1.0},
+            10: {"rsi_sell_max": 90, "required_conditions": 3, "min_atr_value": 0.2, "volume_multiplier": 0.8}
+        }
+        level_params = agg_levels.get(aggressiveness_level, agg_levels[5])
+
+        self.ema_slow_period = config.get("ema_slow_period", 50)
+        self.ema_fast_period = config.get("ema_fast_period", 20)
+        self.ema_trigger_period = config.get("ema_trigger_period", 9)
+        self.rsi_period = config.get("rsi_period", 14)
+        self.atr_period = config.get("atr_period", 14)
+        self.min_atr_value = config.get("min_atr_value", level_params["min_atr_value"])
+        self.volume_window = config.get("volume_window", 20)
+        self.volume_multiplier = config.get("volume_multiplier", level_params["volume_multiplier"])
+        self.volume_ema_period = config.get("volume_ema_period", 20)
+        self.adx_period = config.get("adx_period", 14)
+        self.adx_threshold = config.get("adx_threshold", 20)
+
+        self.sl_multiplier = config.get("sl_multiplier", 1.5)
+        self.tp_multiplier = config.get("tp_multiplier", 1.0)
+
+        self.rsi_sell_max = config.get("rsi_sell_max", level_params.get("rsi_sell_max", 65))
+        self.required_conditions = config.get("required_conditions", level_params["required_conditions"])
+
+    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+        detailed_status = {
+            "is_downtrend_5m": False,
+            "is_pullback_5m": False,
+            "volume_confirm_5m": False,
+            "adx_ok": False,
+            "cond_candle_1m": False,
+            "cond_ema_cross_1m": False,
+            "cond_macd_1m": False,
+            "cond_rsi_1m": False,
+            "sl_pct": 0.0,
+            "tp_pct": 0.0,
+            "error": "",
+        }
+        try:
+            # --- 1. OBTENER DATOS ---
+            limit_5m = max(self.ema_slow_period, self.volume_ema_period, self.adx_period) + 10
+            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            df_5m = normalize_klines(prices_5m, min_length=limit_5m -5)
+            if df_5m.empty:
+                detailed_status["error"] = "Datos 5m insuficientes."
+                return {"signal": "HOLD", "message": f"Datos 5m insuficientes para {symbol}.", "detailed_status": detailed_status}
+
+            limit_1m = max(self.rsi_period, self.atr_period) + 50
+            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            df_1m = normalize_klines(prices_1m, min_length=limit_1m - 5)
+            if df_1m.empty:
+                detailed_status["error"] = "Datos 1m insuficientes."
+                return {"signal": "HOLD", "message": f"Datos 1m insuficientes para {symbol}.", "detailed_status": detailed_status}
+
+            # --- 2. CALCULAR INDICADORES ---
+            # Contexto en 5m
+            df_5m = add_ema(df_5m, self.ema_slow_period)
+            df_5m = add_ema(df_5m, self.ema_fast_period)
+            df_5m['Volume_EMA'] = ta.trend.ema_indicator(df_5m['volume'], window=self.volume_ema_period, fillna=True)
+            df_5m['ADX'] = ta.trend.ADXIndicator(high=df_5m["high"], low=df_5m["low"], close=df_5m["close"], window=self.adx_period).adx()
+            latest_5m = df_5m.iloc[-1]
+
+            # Gatillo en 1m
+            df_1m = add_ema(df_1m, self.ema_trigger_period)
+            df_1m = add_rsi(df_1m, self.rsi_period)
+            macd_1m = ta.trend.MACD(df_1m['close'])
+            df_1m['MACD'] = macd_1m.macd()
+            df_1m['MACD_Signal'] = macd_1m.macd_signal()
+            df_1m["ATR"] = ta.volatility.AverageTrueRange(high=df_1m["high"], low=df_1m["low"], close=df_1m["close"], window=self.atr_period).average_true_range()
+            latest_1m = df_1m.iloc[-1]
+            prev_1m = df_1m.iloc[-2]
+
+            # --- 3. VERIFICAR CONTEXTO (5m) ---
+            is_downtrend = latest_5m[f'EMA{self.ema_fast_period}'] < latest_5m[f'EMA{self.ema_slow_period}'] and latest_5m['close'] < latest_5m[f'EMA{self.ema_slow_period}']
+            is_pullback = latest_5m[f'EMA{self.ema_fast_period}'] < latest_5m['close'] < latest_5m[f'EMA{self.ema_slow_period}']
+            volume_confirm_5m = latest_5m['volume'] > latest_5m['Volume_EMA'] * self.volume_multiplier
+            # adx_ok = latest_5m['ADX'] > self.adx_threshold # Opcional
+
+            detailed_status.update({
+                "is_downtrend_5m": is_downtrend,
+                "is_pullback_5m": is_pullback,
+                "volume_confirm_5m": volume_confirm_5m,
+                # "adx_ok": adx_ok,
+            })
+
+            if not (is_downtrend and is_pullback and volume_confirm_5m):
+                return {"signal": "HOLD", "message": "Esperando contexto bajista (tendencia + pullback + volumen) en 5m.", "detailed_status": detailed_status}
+
+            # --- 4. BUSCAR GATILLO (1m) ---
+            cond_candle = latest_1m['close'] < latest_1m['open']
+            cond_ema_cross = latest_1m['close'] < latest_1m[f'EMA{self.ema_trigger_period}']
+            cond_rsi = latest_1m['RSI'] < self.rsi_sell_max and latest_1m['RSI'] < prev_1m['RSI']
+            cond_macd = latest_1m['MACD'] < latest_1m['MACD_Signal']
+
+            detailed_status.update({
+                "cond_candle_1m": cond_candle,
+                "cond_ema_cross_1m": cond_ema_cross,
+                "cond_rsi_1m": cond_rsi,
+                "cond_macd_1m": cond_macd,
+            })
+
+            # --- 5. GESTIÓN DE RIESGO Y SEÑAL ---
+            sl_pct = 0.0
+            tp_pct = 0.0
+            if not pd.isna(latest_1m["ATR"]):
+                sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+                tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+            detailed_status["sl_pct"] = sl_pct
+            detailed_status["tp_pct"] = tp_pct
+
+            trigger_conditions = [cond_candle, cond_ema_cross, cond_macd, cond_rsi]
+            if sum(trigger_conditions) >= self.required_conditions:
+                entry = latest_1m['close']
+                return {
+                    "signal": "SELL",
+                    "message": f"Gatillo de venta detectado con {sum(trigger_conditions)}/{len(trigger_conditions)} condiciones.",
+                    "entry": entry,
+                    "sl_pct": sl_pct,
+                    "tp_pct": tp_pct,
+                    "detailed_status": detailed_status
+                }
+
+            return {"signal": "HOLD", "message": "Contexto OK, esperando gatillo de entrada en 1m.", "detailed_status": detailed_status}
+
+        except Exception as e:
+            logger.error(f"SheilashortLite error: {str(e)}")
+            detailed_status["error"] = str(e)
+            return {"signal": "ERROR", "message": str(e), "detailed_status": detailed_status}
+
+
+            --- FIN DE DATOS ---
+
+            Genera el análisis usando exclusivamente los datos proporcionados. Usa formato HTML (<b>, <i>, 
+, <br>) para la respuesta. Asegúrate de que el análisis sea muy detallado y cubra todos los puntos solicitados para cada estrategia, incluso si el rendimiento es nulo o bajo. Si no hay datos suficientes para un punto, indícalo explícitamente. Prioriza la claridad y la estructura en tu respuesta.
+            

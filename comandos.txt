@@ -1,0 +1,15 @@
+Comandos de Telegram disponibles:
+
+/list: Muestra el estado actual de todas las estrategias disponibles, indicando cuáles están activas y cuáles pausadas.
+/resume<número>: Reanuda una estrategia específica, donde <número> es el índice de la estrategia en la lista obtenida con /list.
+/pause<número>: Pausa una estrategia específica, donde <número> es el índice de la estrategia en la lista obtenida con /list.
+/pause_all: Pausa todas las estrategias activas.
+/resume_all: Activa todas las estrategias disponibles.
+/comandos: Muestra esta lista de comandos.
+/estado: Estado Detallado de Estrategias.
+/historial: Historial de Operaciones.
+/resumen: Resumen de Rendimiento y Rendimiento por Estrategia.
+/analisis: Análisis de IA.
+/status: Muestra si el bot está activo o parado.
+/start: Inicia el bot.
+/stop: Detiene el bot.

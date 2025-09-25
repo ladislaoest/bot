@@ -1,0 +1,7 @@
+streamlit
+python-dotenv
+pandas
+ta
+requests
+python-binance
+pycoingecko

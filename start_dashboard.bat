@@ -1,0 +1,6 @@
+@echo off
+echo Iniciando el bot de trading en segundo plano...
+start /b python "C:\Users\FLUGE\Desktop\btc\run_all_strategies_final.py"
+echo Iniciando el dashboard de Streamlit...
+streamlit run "C:\Users\FLUGE\Desktop\btc\dashboard.py"
+PAUSE

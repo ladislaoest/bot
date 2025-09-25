@@ -1,0 +1,397 @@
+# Explicación Detallada de Estrategias de Trading
+
+Este documento describe el funcionamiento de cada estrategia de trading implementada en el bot, detallando sus parámetros, condiciones de entrada y salida.
+
+---
+
+## 1. HoyStrategy
+
+**Descripción:** Estrategia de scalping basada en niveles clave de soporte y resistencia con confirmaciones de volumen y velas. Utiliza niveles de soporte y resistencia dinámicos (máximo/mínimo del día).
+
+**Parámetros Clave:**
+*   `price_tolerance_factor`: Factor de tolerancia para determinar qué tan cerca debe estar el precio de los niveles de S/R.
+*   `volume_multiplier`: Multiplicador para el volumen promedio, usado para confirmar un volumen fuerte.
+*   `stop_loss_pct`: Porcentaje de stop loss (si `sl_tp_method` es "percentage").
+*   `take_profit_pct`: Porcentaje de take profit (si `sl_tp_method` es "percentage").
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `atr_period`: Período para el cálculo del Average True Range (ATR).
+*   `atr_multiplier_sl`: Multiplicador para el Stop Loss basado en ATR.
+*   `atr_multiplier_tp`: Multiplicador para el Take Profit basado en ATR.
+
+**Condiciones de Entrada:**
+*   **Niveles de Soporte/Resistencia Dinámicos:** Se obtienen del máximo y mínimo del día actual (vela diaria).
+*   **Condiciones Generales (1 minuto):**
+    *   `is_volume_strong`: El volumen de la vela actual de 1 minuto es mayor que el volumen promedio de 20 velas multiplicado por `volume_multiplier`.
+    *   `is_bullish_candle`: La vela actual de 1 minuto es alcista (cierre > apertura).
+    *   `is_bearish_candle`: La vela actual de 1 minuto es bajista (cierre < apertura).
+
+*   **Señal de COMPRA (en Soporte Dinámico):**
+    1.  El precio de cierre actual de 1 minuto está cerca del nivel de soporte dinámico (dentro de `price_tolerance_factor`).
+    2.  La vela actual de 1 minuto es alcista.
+    3.  El volumen es fuerte.
+
+*   **Señal de VENTA (en Resistencia Dinámica):**
+    1.  El precio de cierre actual de 1 minuto está cerca del nivel de resistencia dinámico (dentro de `price_tolerance_factor`).
+    2.  La vela actual de 1 minuto es bajista.
+    3.  El volumen es fuerte.
+
+    **Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+---
+
+## 2. Estrategia1corto
+
+**Descripción:** Estrategia de scalping en corto basada en una tendencia bajista confirmada por EMAs, un RSI en zona de venta, un cruce bajista de MACD y confirmación de volumen.
+
+**Parámetros Clave:**
+*   `ema9_period`, `ema20_period`, `ema50_period`, `ema200_period`: Períodos para las Medias Móviles Exponenciales (EMAs).
+*   `rsi_period`: Período para el Índice de Fuerza Relativa (RSI).
+*   `rsi_sell_threshold`: Umbral del RSI para la señal de venta (por defecto 50).
+*   `volume_lookback`: Período de retrospectiva para el cálculo del volumen promedio.
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+
+**Condiciones de Entrada (Señal de VENTA):**
+1.  **Confirmación de Tendencia Bajista (gráfico de 5 minutos):**
+    *   El precio de cierre actual es menor que la EMA de 9 períodos.
+    *   La EMA de 9 períodos es menor que la EMA de 20 períodos.
+    *   La EMA de 20 períodos es menor que la EMA de 50 períodos.
+2.  **Condición de RSI (gráfico de 5 minutos):**
+    *   El RSI actual es menor que `rsi_sell_threshold` (por defecto 50).
+3.  **Cruce de MACD (gráfico de 1 minuto):**
+    *   La línea MACD cruza por debajo de la línea de señal MACD.
+    **Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+
+---
+
+## 3. RetestBreakoutShortStrategy
+
+**Descripción:** Estrategia de scalping bajista que busca rupturas de niveles de soporte seguidas de un retesteo, confirmadas por RSI, volumen y MACD, con gestión de riesgo en el timeframe de 1 minuto.
+
+**Parámetros Clave:**
+*   `ema_fast_period`, `ema_slow_period`: Períodos para las EMAs usadas en el filtro de tendencia.
+*   `lookback_period_for_support`: Período para identificar el nivel de soporte dinámico.
+*   `retest_range_factor`: Factor de tolerancia para el rango de retesteo alrededor del soporte.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_sell_threshold`: Umbral del RSI para la señal de venta.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `volume_multiplier`: Multiplicador para el volumen promedio.
+*   `stop_loss_pct`: Porcentaje de stop loss (si `sl_tp_method` es "percentage").
+*   `take_profit_pct`: Porcentaje de take profit (si `sl_tp_method` es "percentage").
+*   `risk_per_trade`: Porcentaje del capital a arriesgar por operación.
+*   `atr_period`: Período para el ATR.
+*   `min_atr`: ATR mínimo para el filtro de volatilidad.
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `atr_multiplier_sl`: Multiplicador para el Stop Loss basado en ATR.
+*   `atr_multiplier_tp`: Multiplicador para el Take Profit basado en ATR.
+
+**Condiciones de Entrada (Señal de VENTA - en 1 minuto):**
+1.  **Confirmación de Tendencia Bajista:** La EMA rápida está por debajo de la EMA lenta.
+2.  **Filtro de Volatilidad:** El ATR actual es mayor que `min_atr`.
+3.  **Soporte Dinámico:** Se identifica el mínimo de las últimas `lookback_period_for_support` velas como nivel de soporte.
+4.  **Ruptura:** El precio ha roto por debajo del nivel de soporte.
+5.  **Retesteo:** El precio actual está dentro del rango de retesteo alrededor del soporte.
+6.  **Confirmación de RSI:** El RSI actual es menor que `rsi_sell_threshold`.
+7.  **Confirmación de Volumen:** El volumen actual es mayor que el volumen promedio multiplicado por `volume_multiplier`.
+    **Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+
+---
+
+## 4. RetestBreakoutStrategy
+
+**Descripción:** Estrategia de scalping alcista que busca rupturas de niveles de resistencia seguidas de un retesteo, confirmadas por RSI, volumen y MACD, con gestión de riesgo en el timeframe de 1 minuto.
+
+**Parámetros Clave:**
+*   `ema_fast_period`, `ema_slow_period`: Períodos para las EMAs usadas en el filtro de tendencia.
+*   `ema_long_trend_period`: Período para el filtro de tendencia a largo plazo (EMA).
+*   `lookback_period_for_resistance`: Período para identificar el nivel de resistencia dinámico.
+*   `retest_range_factor`: Factor de tolerancia para el rango de retesteo alrededor de la resistencia.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_buy_threshold`: Umbral del RSI para la señal de compra.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `volume_multiplier`: Multiplicador para el volumen promedio.
+*   `stop_loss_pct`: Porcentaje de stop loss (si `sl_tp_method` es "percentage").
+*   `take_profit_pct`: Porcentaje de take profit (si `sl_tp_method` es "percentage").
+*   `risk_per_trade`: Porcentaje del capital a arriesgar por operación.
+*   `atr_period`: Período para el ATR.
+*   `min_atr`: ATR mínimo para el filtro de volatilidad.
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `atr_multiplier_sl`: Multiplicador para el Stop Loss basado en ATR.
+*   `atr_multiplier_tp`: Multiplicador para el Take Profit basado en ATR.
+
+**Condiciones de Entrada (Señal de COMPRA - en 1 minuto):**
+1.  **Confirmación de Tendencia Alcista:** La EMA rápida está por encima de la EMA lenta.
+2.  **Filtro de Volatilidad:** El ATR actual es mayor que `min_atr`.
+3.  **Filtro de Tendencia a Largo Plazo:** El precio de cierre actual está por encima de la EMA de tendencia a largo plazo.
+4.  **Resistencia Dinámica:** Se identifica el máximo de las últimas `lookback_period_for_resistance` velas como nivel de resistencia.
+5.  **Ruptura:** El precio ha roto por encima del nivel de resistencia.
+6.  **Retesteo:** El precio actual está dentro del rango de retesteo alrededor de la resistencia.
+7.  **Confirmación de RSI:** El RSI actual es mayor que `rsi_buy_threshold`.
+8.  **Confirmación de Volumen:** El volumen actual es mayor que el volumen promedio multiplicado por `volume_multiplier`.
+**Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+
+---
+
+## 5. UserScalpingStrategy
+
+**Descripción:** Estrategia de scalping conservador que combina doble EMA, ATR dinámico y filtros de volumen/RSI para identificar oportunidades de compra.
+
+**Parámetros Clave:**
+*   `ema_fast`, `ema_slow`: Períodos para las EMAs rápida y lenta.
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `stop_loss_pct`: Porcentaje de stop loss (si `sl_tp_method` es "percentage").
+*   `take_profit_pct`: Porcentaje de take profit (si `sl_tp_method` es "percentage").
+*   `atr_period`: Período para el ATR.
+*   `atr_multiplier_sl`: Multiplicador para el Stop Loss basado en ATR.
+*   `atr_multiplier_tp`: Multiplicador para el Take Profit basado en ATR.
+*   `min_rsi`: RSI mínimo requerido para la señal de compra.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+
+**Condiciones de Entrada (Señal de COMPRA):**
+1.  **Tendencia Alcista Fuerte (gráfico de 5 minutos):** La EMA rápida está por encima de la EMA lenta.
+2.  **Cruce de EMA (gráfico de 1 minuto):** La EMA rápida cruza por encima de la EMA lenta.
+3.  **Filtro de RSI (gráfico de 1 minuto):** El RSI actual es mayor que `min_rsi`.
+4.  **Confirmación de Volumen (gráfico de 1 minuto):** El volumen actual es mayor que el volumen promedio.
+5.  **Confirmación Alcista de MACD (gráfico de 1 minuto):** La línea MACD está por encima de la línea de señal MACD.
+
+**Condiciones de Salida (Stop Loss / Take Profit):**
+*   Se calculan según el método `sl_tp_method`:
+    *   **"percentage"**: SL y TP se fijan como un porcentaje del precio de entrada.
+    *   **"atr"**: SL y TP se fijan como un múltiplo del valor ATR actual.
+
+---
+
+## 6. BullishContinuationScalping
+
+**Descripción:** Estrategia de scalping alcista que busca la continuación de una tendencia alcista tras un rebote en una EMA, confirmada por RSI, volumen y MACD.
+
+**Parámetros Clave:**
+*   `ema_trend_period`: Período para la EMA que define la tendencia principal.
+*   `ema_rebound_period`: Período para la EMA usada para confirmar el rebote.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_threshold`: Umbral del RSI para la señal de compra.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+
+**Condiciones de Entrada (Señal de COMPRA):**
+1.  **Confirmación de Tendencia Alcista (gráfico de 5 minutos):** El precio de cierre actual está por encima de la EMA de tendencia.
+2.  **Rebote en EMA (gráfico de 5 minutos):** El mínimo de la vela actual es menor o igual que la EMA de rebote, y el cierre es mayor que la EMA de rebote.
+3.  **Confirmación de RSI (gráfico de 5 minutos):** El RSI actual es mayor que `rsi_threshold`.
+4.  **Confirmación de Volumen (gráfico de 5 minutos):** El volumen actual es mayor que el volumen promedio.
+    **Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+
+---
+
+## 7. EmaPullbackStrategy
+
+**Descripción:** Estrategia de scalping que identifica oportunidades de compra y venta basadas en pullbacks a una EMA, confirmadas por la tendencia a largo plazo, RSI, volumen y MACD.
+
+**Parámetros Clave:**
+*   `ema_trend`: Período para la EMA que define la tendencia.
+*   `ema_pullback`: Período para la EMA usada para identificar pullbacks.
+*   `ema_long_trend_period`: Período para la EMA de tendencia a largo plazo.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_buy_threshold`: Umbral del RSI para la señal de compra.
+*   `rsi_sell_threshold`: Umbral del RSI para la señal de venta.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+
+**Condiciones de Entrada:**
+
+*   **Señal de COMPRA:**
+    1.  **Tendencia Alcista (gráfico de 5 minutos):** El precio de cierre actual está por encima de la EMA de tendencia.
+    2.  **Filtro de Tendencia a Largo Plazo (gráfico de 5 minutos):** El precio de cierre actual está por encima de la EMA de tendencia a largo plazo.
+    3.  **Confirmación de Pullback (gráfico de 5 minutos):** El mínimo de la vela actual es menor o igual que la EMA de pullback, y el cierre es mayor que la EMA de pullback.
+    4.  **Confirmación de RSI (gráfico de 5 minutos):** El RSI actual es mayor que `rsi_buy_threshold`.
+    5.  **Confirmación de Volumen (gráfico de 5 minutos):** El volumen actual es mayor que el volumen promedio.
+    6.  **Confirmación Alcista de MACD (gráfico de 5 minutos):** La línea MACD está por encima de la línea de señal MACD.
+
+*   **Señal de VENTA:**
+    1.  **Tendencia Bajista (gráfico de 5 minutos):** El precio de cierre actual está por debajo de la EMA de tendencia.
+    2.  **Filtro de Tendencia a Largo Plazo (gráfico de 5 minutos):** El precio de cierre actual está por debajo de la EMA de tendencia a largo plazo.
+    3.  **Confirmación de Pullback (gráfico de 5 minutos):** El máximo de la vela actual es mayor o igual que la EMA de pullback, y el cierre es menor que la EMA de pullback.
+    4.  **Confirmación de RSI (gráfico de 5 minutos):** El RSI actual es menor que `rsi_sell_threshold`.
+    5.  **Confirmación de Volumen (gráfico de 5 minutos):** El volumen actual es mayor que el volumen promedio.
+**Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+
+---
+
+## 8. APlusStrategy_largo
+
+**Descripción:** Estrategia de trading a largo plazo que utiliza la tendencia de 1 hora como filtro principal, combinada con condiciones de entrada en el timeframe de 5 minutos basadas en el precio, RSI y MACD.
+
+**Parámetros Clave:**
+*   `ema_1h_period`: Período para la EMA de 1 hora (filtro de tendencia principal).
+*   `ema_5m_period`: Período para la EMA de 5 minutos.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_buy_threshold`: Umbral del RSI para la señal de compra.
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+
+**Condiciones de Entrada (Señal de COMPRA):**
+1.  **Confirmación de Tendencia Alcista (gráfico de 1 hora):** El precio de cierre actual está por encima de la EMA de 1 hora.
+2.  **Precio por encima de EMA (gráfico de 5 minutos):** El precio de cierre actual está por encima de la EMA de 5 minutos.
+3.  **Confirmación de RSI (gráfico de 5 minutos):** El RSI actual es mayor que `rsi_buy_threshold`.
+    **Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+---
+
+## 9. VWAP_EMA_ProScalping_MTF
+
+**Descripción:** Estrategia de scalping profesional multi-timeframe que combina VWAP diario, EMA, RSI, MACD y ATR para identificar oportunidades de compra y venta, con una gestión de riesgo avanzada.
+
+**Parámetros Clave:**
+*   `ema_period`: Período para la EMA.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_buy_threshold`: Umbral del RSI para la señal de compra.
+*   `rsi_sell_threshold`: Umbral del RSI para la señal de venta.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `min_volume_mult`: Multiplicador para el volumen mínimo requerido.
+*   `risk_per_trade`: Porcentaje del capital a arriesgar por operación.
+*   `atr_period`: Período para el ATR.
+*   `atr_sl_mult`: Multiplicador para el Stop Loss basado en ATR.
+*   `atr_tp_mult`: Multiplicador para el Take Profit basado en ATR.
+*   `capital`: Capital total disponible para el bot.
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `stop_loss_pct`: Porcentaje de stop loss (si `sl_tp_method` es "percentage").
+*   `take_profit_pct`: Porcentaje de take profit (si `sl_tp_method` es "percentage").
+
+    **Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+
+---
+
+## 10. JotaStrategyScalping
+
+**Descripción:** Estrategia de scalping rápido que combina la tendencia (EMA), el momentum (MACD) y el volumen para identificar oportunidades de compra.
+
+**Parámetros Clave:**
+*   `ema_fast`, `ema_slow`: Períodos para las EMAs rápida y lenta.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_min_level`: Nivel mínimo del RSI para confirmar el momentum.
+*   `rsi_overbought_threshold`: Nivel máximo del RSI para evitar condiciones de sobrecompra.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `atr_period`: Período para el ATR.
+*   `atr_multiplier_sl`: Multiplicador para el Stop Loss basado en ATR.
+*   `atr_multiplier_tp`: Multiplicador para el Take Profit basado en ATR.
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+
+**Condiciones de Entrada (Señal de COMPRA):**
+1.  **Confirmación de Tendencia Alcista (gráfico de 5 minutos):** La EMA rápida está por encima de la EMA lenta.
+2.  **Confirmación de Vela (gráfico de 1 minuto):** La vela actual es alcista y tiene una mecha inferior más grande que la superior.
+3.  **Filtro de RSI (gráfico de 1 minuto):** El RSI actual está entre `rsi_min_level` y `rsi_overbought_threshold`.
+    **Condiciones de Salida (Stop Loss / Take Profit):**
+*   El Stop Loss y Take Profit son **globales y fijos** para todas las operaciones, definidos en `capital_bot.py`.
+*   Actualmente, el Stop Loss es del **0.15%** y el Take Profit es del **0.22%** del precio de entrada real.
+
+---
+
+## 11. LongVersionStrategyLong
+
+**Descripción:** Estrategia de scalping rápido basada en un pullback a una EMA y un RSI saludable, con múltiples filtros de tendencia, volatilidad, volumen y MACD.
+
+**Parámetros Clave:**
+*   `ema_slow`, `ema_fast`: Períodos para las EMAs lenta y rápida.
+*   `ema_long_trend_period`: Período para la EMA de tendencia a largo plazo.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_min_level`, `rsi_max_level`: Niveles mínimo y máximo del RSI para la entrada.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `atr_period`: Período para el ATR.
+*   `atr_multiplier_sl`, `atr_multiplier_tp`: Multiplicadores para SL/TP basados en ATR.
+*   `min_atr`: ATR mínimo para el filtro de volatilidad.
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+
+**Condiciones de Entrada (Señal de COMPRA):**
+1.  **Filtro de Volatilidad (gráfico de 5 minutos):** El ATR actual es mayor o igual que `min_atr`.
+2.  **Tendencia Alcista Fuerte (gráfico de 5 minutos):** La EMA rápida está por encima de la EMA lenta.
+3.  **Filtro de Tendencia a Largo Plazo (gráfico de 5 minutos):** El precio de cierre actual está por encima de la EMA de tendencia a largo plazo.
+4.  **Confirmación de Pullback (gráfico de 1 minuto):** El mínimo de la vela actual es menor o igual que la EMA rápida, el cierre es mayor que la EMA rápida, y la vela es alcista (verde).
+5.  **Filtro de RSI (gráfico de 1 minuto):** El RSI actual está entre `rsi_min_level` y `rsi_max_level`.
+6.  **Confirmación de Volumen (gráfico de 1 minuto):** El volumen actual es mayor que el volumen promedio y mayor que el volumen de la vela previa.
+7.  **Confirmación Alcista de MACD (gráfico de 1 minuto):** La línea MACD está por encima de la línea de señal MACD.
+
+**Condiciones de Salida (Stop Loss / Take Profit):**
+*   Se calculan según el método `sl_tp_method`:
+    *   **"percentage"**: SL y TP se fijan como un porcentaje del precio de entrada.
+    *   **"atr"**: SL y TP se fijan como un múltiplo del valor ATR actual.
+
+---
+
+## 12. MomentumBreakoutStrategyLong
+
+**Descripción:** Estrategia de scalping rápido basada en la ruptura de máximos recientes, confirmada por momentum (RSI, MACD) y volumen, operando en largo.
+
+**Parámetros Clave:**
+*   `ema_5m_fast`, `ema_5m_slow`: Períodos para las EMAs rápida y lenta en el gráfico de 5 minutos.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_threshold`: Umbral del RSI para la señal de compra.
+*   `breakout_lookback`: Período de retrospectiva para identificar el máximo reciente.
+*   `volume_multiplier`: Multiplicador para el volumen promedio.
+*   `breakout_strength_factor`: Factor para la fuerza de la ruptura (porcentaje por encima del máximo).
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+
+**Condiciones de Entrada (Señal de COMPRA):**
+1.  **Confirmación de Tendencia Alcista (gráfico de 5 minutos):** El precio de cierre actual está por encima de la EMA rápida y la EMA lenta.
+2.  **Ruptura (gráfico de 1 minuto):** El precio de cierre actual rompe por encima del máximo reciente (calculado sobre `breakout_lookback` velas) por un factor de `breakout_strength_factor`.
+3.  **Confirmación de RSI (gráfico de 1 minuto):** El RSI actual es mayor que `rsi_threshold`.
+4.  **Confirmación de Volumen (gráfico de 1 minuto):** El volumen actual es mayor que el volumen promedio multiplicado por `volume_multiplier`.
+5.  **Confirmación Alcista de MACD (gráfico de 1 minuto):** La línea MACD está por encima de la línea de señal MACD.
+
+**Condiciones de Salida (Stop Loss / Take Profit):**
+*   SL y TP se fijan como un porcentaje del precio de entrada (`stop_loss_pct` y `take_profit_pct`).
+
+---
+
+## 13. OpeningRangeBreakoutStrategyLong
+
+**Descripción:** Estrategia de scalping reforzada que busca rupturas del rango de apertura, con confirmaciones multi-timeframe (5 minutos y 1 minuto) de tendencia, volatilidad, RSI, volumen y MACD.
+
+**Parámetros Clave:**
+*   `opening_range_minutes`: Duración del rango de apertura en minutos.
+*   `ema_fast`, `ema_slow`: Períodos para las EMAs rápida y lenta.
+*   `ema_trend_period`: Período para la EMA de tendencia principal.
+*   `rsi_period`: Período para el RSI.
+*   `rsi_buy_threshold`: Umbral del RSI para la señal de compra.
+*   `volume_lookback`: Período para el cálculo del volumen promedio.
+*   `volume_multiplier`: Multiplicador para el volumen promedio.
+*   `sl_tp_method`: Método para calcular Stop Loss y Take Profit ("percentage" o "atr").
+*   `stop_loss_pct`: Porcentaje de stop loss.
+*   `take_profit_pct`: Porcentaje de take profit.
+*   `atr_period`: Período para el ATR.
+*   `min_atr`: ATR mínimo para el filtro de volatilidad.
+*   `atr_sl_mult`: Multiplicador para el Stop Loss basado en ATR.
+*   `atr_tp_mult`: Multiplicador para el Take Profit basado en ATR.
+
+**Condiciones de Entrada (Señal de COMPRA):**
+1.  **Filtro de Tendencia (gráfico de 5 minutos):** La EMA rápida está por encima de la EMA lenta.
+2.  **Filtro de Tendencia Principal (gráfico de 5 minutos):** El precio de cierre actual está por encima de la EMA de tendencia principal.
+3.  **Filtro de Volatilidad (gráfico de 5 minutos):** El ATR actual es mayor o igual que `min_atr`.
+4.  **Ruptura del Rango de Apertura (gráfico de 1 minuto):** El precio de cierre actual rompe por encima del máximo del rango de apertura.
+5.  **Confirmación de RSI (gráfico de 1 minuto):** El RSI actual es mayor que `rsi_buy_threshold`.
+6.  **Confirmación de Volumen (gráfico de 1 minuto):** El volumen actual es mayor que el volumen promedio multiplicado por `volume_multiplier` y mayor que el volumen de la vela previa.
+7.  **Confirmación Alcista de MACD (gráfico de 1 minuto):** La línea MACD está por encima de la línea de señal MACD.
+
+**Condiciones de Salida (Stop Loss / Take Profit):**
+*   Se calculan según el método `sl_tp_method`:
+    *   **"percentage"**: SL y TP se fijan como un porcentaje del precio de entrada.
+    *   **"atr"**: SL y TP se fijan como un múltiplo del valor ATR actual.

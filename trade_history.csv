@@ -1,0 +1,1 @@
+open_time,strategy,epic,direction,size,entry_price,stop_level,profit_level,dealReference,dealId,status,profit_loss,close_time,close_price,entry_conditions,exit_conditions,exit_reason,tp_sl_against_trend_active,sl_moved_to_be,break_even_profit_pct,current_trend,atr_5m
