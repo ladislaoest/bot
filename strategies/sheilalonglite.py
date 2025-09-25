@@ -50,7 +50,7 @@ class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: A
         # Umbral RSI dinámico
         self.rsi_buy_threshold = config.get("rsi_buy_threshold", level_params["rsi_buy"])
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         sl_pct = 0.0
         tp_pct = 0.0
         detailed_status = {
@@ -68,7 +68,7 @@ class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: A
         try:
             # --- Datos 1m ---
             limit_1m = max(self.opening_range_minutes, self.ema_slow, self.rsi_period, self.volume_lookback, self.macd_slow, self.atr_period, self.adx_period) + 30
-            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            prices_1m = trading_bot_instance._get_binance_klines_data(symbol, "1m", limit=limit_1m).get("prices", [])
             df_1m = normalize_klines(prices_1m, min_length=limit_1m - 10)
             if df_1m.empty:
                 detailed_status["error"] = "Datos 1m insuficientes."
@@ -86,7 +86,7 @@ class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: A
 
             # --- Datos 5m ---
             limit_5m = max(self.ema_slow, self.ema_trend_period, self.atr_period, self.atr_sma_period) + 30
-            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            prices_5m = trading_bot_instance._get_binance_klines_data(symbol, "5m", limit=limit_5m).get("prices", [])
             df_5m = normalize_klines(prices_5m, min_length=limit_5m - 10)
             if df_5m.empty:
                 detailed_status["error"] = f"Datos 5m insuficientes para {symbol}."

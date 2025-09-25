@@ -49,21 +49,21 @@ class LadisLongLite(BaseStrategy): # Heredar de BaseStrategy
         self.required_conditions = config.get("required_conditions", level_params["required_conditions"]) # Nuevo
         self.atr_sma_period = config.get("atr_sma_period", 20)
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         detailed_status = { "error": "" }
         sl_pct = 0.0 # Inicializar
         tp_pct = 0.0 # Inicializar
         try:
             # --- Datos 5m ---
             limit_5m = max(self.ema_slow, self.atr_period, self.ema_long_trend_period, self.adx_period) + 50 # Update limit_5m
-            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            prices_5m = trading_bot_instance._get_binance_klines_data(symbol, "5m", limit=limit_5m).get("prices", [])
             df_5m = normalize_klines(prices_5m, min_length=limit_5m - 10)
             if df_5m.empty:
                 return {"signal": "HOLD", "message": f"Datos 5m insuficientes para {symbol}. Se requieren {limit_5m} velas.", "detailed_status": detailed_status}
 
             # --- Datos 1m ---
             limit_1m = max(self.ema_fast, self.rsi_period, self.volume_lookback) + 51
-            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            prices_1m = trading_bot_instance._get_binance_klines_data(symbol, "1m", limit=limit_1m).get("prices", [])
             df_1m = normalize_klines(prices_1m, min_length=limit_1m - 10)
             if df_1m.empty:
                 return {"signal": "HOLD", "message": f"Datos 1m insuficientes para {symbol}. Se requieren {limit_1m} velas.", "detailed_status": detailed_status}

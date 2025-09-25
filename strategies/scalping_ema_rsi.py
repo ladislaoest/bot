@@ -48,7 +48,7 @@ class ScalpingEmaRsi(BaseStrategy): # Heredar de BaseStrategy
         self.rsi_buy_max = config.get("rsi_buy_max", level_params["rsi_buy_max"])
         self.rsi_sell_min = config.get("rsi_sell_min", level_params["rsi_sell_min"])
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         sl_pct = 0.0 # Inicializar
         tp_pct = 0.0 # Inicializar
         detailed_status = {
@@ -58,7 +58,7 @@ class ScalpingEmaRsi(BaseStrategy): # Heredar de BaseStrategy
         try:
             # --- Obtención de datos ---
             limit = self.ema_slow_period + self.rsi_period + 5 # Suficiente histórico para los indicadores
-            prices = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit).get("prices", [])
+            prices = trading_bot_instance._get_binance_klines_data(symbol, "5m", limit=limit).get("prices", [])
             df = normalize_klines(prices, min_length=limit - 2)
 
             if df.empty:
@@ -85,8 +85,8 @@ class ScalpingEmaRsi(BaseStrategy): # Heredar de BaseStrategy
 
             # Calcular SL y TP basados en ATR
             if not pd.isna(latest["ATR"]):
-                sl_pct = (self.sl_multiplier * latest["ATR"] / latest['close']) * 100
-                tp_pct = (self.tp_multiplier * latest["ATR"] / latest['close']) * 100
+                sl_pct = (self.sl_multiplier * latest["ATR"] / latest['close'])
+                tp_pct = (self.tp_multiplier * latest["ATR"] / latest['close'])
             detailed_status["sl_pct"] = sl_pct
             detailed_status["tp_pct"] = tp_pct
             detailed_status["ATR"] = latest["ATR"]

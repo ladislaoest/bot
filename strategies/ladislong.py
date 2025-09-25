@@ -4,12 +4,15 @@ import pandas as pd
 import ta
 import logging
 
+from strategies.base import BaseStrategy
+
 logger = logging.getLogger(__name__)
 
-class LadisLong:
+class LadisLong(BaseStrategy):
     """Estrategia LadisLong: Scalping rápido basado en pullback a EMA y RSI saludable."""
 
     def __init__(self, config=None, aggressiveness_level=3):
+        super().__init__(config, aggressiveness_level)
         config = config or {}
         self.aggressiveness_level = aggressiveness_level
 
@@ -43,7 +46,7 @@ class LadisLong:
         self.rsi_min_level = config.get("rsi_min_level", level_params["rsi_min"])
         self.rsi_max_level = config.get("rsi_max_level", level_params["rsi_max"])
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         detailed_status = {
             "data_5m_ok": False,
             "data_1m_ok": False,
@@ -75,7 +78,7 @@ class LadisLong:
         try:
             # Datos 5m para tendencia y ATR
             limit_5m = max(self.ema_slow, self.atr_period, self.ema_long_trend_period) + 50 # Update limit_5m
-            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            prices_5m = trading_bot_instance._get_binance_klines_data(symbol, "5m", limit=limit_5m).get("prices", [])
             df_5m = normalize_klines(prices_5m, min_length=limit_5m - 10)
             if df_5m.empty:
                 detailed_status["data_5m_ok"] = False
@@ -85,7 +88,7 @@ class LadisLong:
 
             # Datos 1m para pullback y señal
             limit_1m = max(self.ema_fast, self.rsi_period, self.volume_lookback) + 50
-            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            prices_1m = trading_bot_instance._get_binance_klines_data(symbol, "1m", limit=limit_1m).get("prices", [])
             df_1m = normalize_klines(prices_1m, min_length=limit_1m - 10)
             if df_1m.empty:
                 detailed_status["data_1m_ok"] = False
@@ -187,8 +190,8 @@ class LadisLong:
             sl_pct = 0.0
             tp_pct = 0.0
             if not df_5m.empty and not pd.isna(latest_5m["ATR"]) and latest_5m["ATR"] > 0 and latest_1m['close'] > 0: # Usar ATR de 5m para SL/TP
-                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100 # Usar latest_1m['close'] para el cálculo del porcentaje
-                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_1m['close']) * 100
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_1m['close'])
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_1m['close'])
             else:
                 # Si ATR o close son inválidos, usar valores por defecto o de configuración
                 sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto

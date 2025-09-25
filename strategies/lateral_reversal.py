@@ -54,7 +54,7 @@ class LateralReversal(BaseStrategy):
         }
         self.bb_tolerance_factor = config.get('bb_tolerance_factor', agg_levels_bb_tolerance.get(aggressiveness_level, 0.0010))
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         detailed_status = {
             "data_ok": False,
             "bb_lower_band": 0.0,
@@ -78,7 +78,7 @@ class LateralReversal(BaseStrategy):
             # --- 1. OBTENER DATOS ---
             # Necesitamos suficientes datos para BB, RSI, ATR y Volumen
             limit = max(self.bb_window, self.rsi_window, self.atr_window, self.volume_window) + 50
-            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit).get("prices", [])
+            prices_1m = trading_bot_instance._get_binance_klines_data(symbol, "1m", limit=limit).get("prices", [])
             df_1m = normalize_klines(prices_1m, min_length=limit - 10)
 
             if df_1m.empty:
@@ -134,8 +134,8 @@ class LateralReversal(BaseStrategy):
             sl_pct = 0.0
             tp_pct = 0.0
             if not pd.isna(latest_candle["ATR"]) and latest_candle["ATR"] > 0 and current_price > 0:
-                sl_pct = (self.sl_atr_multiplier * latest_candle["ATR"] / current_price) * 100
-                tp_pct = (self.tp_atr_multiplier * latest_candle["ATR"] / current_price) * 100
+                sl_pct = (self.sl_atr_multiplier * latest_candle["ATR"] / current_price)
+                tp_pct = (self.tp_atr_multiplier * latest_candle["ATR"] / current_price)
             else:
                 # Si ATR o current_price son inválidos, usar valores por defecto o de configuración
                 sl_pct = self.sl_atr_multiplier * 0.01 # Un valor pequeño por defecto

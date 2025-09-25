@@ -44,7 +44,7 @@ class SheilashortLite(BaseStrategy): # Heredar de BaseStrategy
         self.rsi_sell_max = config.get("rsi_sell_max", level_params.get("rsi_sell_max", 65))
         self.required_conditions = config.get("required_conditions", level_params["required_conditions"])
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         detailed_status = {
             "is_downtrend_5m": False,
             "is_pullback_5m": False,
@@ -61,14 +61,14 @@ class SheilashortLite(BaseStrategy): # Heredar de BaseStrategy
         try:
             # --- 1. OBTENER DATOS ---
             limit_5m = max(self.ema_slow_period, self.volume_ema_period, self.adx_period) + 10
-            prices_5m = binance_data_provider.get_historical_klines(symbol, "5m", limit=limit_5m).get("prices", [])
+            prices_5m = trading_bot_instance._get_binance_klines_data(symbol, "5m", limit=limit_5m).get("prices", [])
             df_5m = normalize_klines(prices_5m, min_length=limit_5m -5)
             if df_5m.empty:
                 detailed_status["error"] = "Datos 5m insuficientes."
                 return {"signal": "HOLD", "message": f"Datos 5m insuficientes para {symbol}.", "detailed_status": detailed_status}
 
             limit_1m = max(self.rsi_period, self.atr_period) + 50
-            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            prices_1m = trading_bot_instance._get_binance_klines_data(symbol, "1m", limit=limit_1m).get("prices", [])
             df_1m = normalize_klines(prices_1m, min_length=limit_1m - 5)
             if df_1m.empty:
                 detailed_status["error"] = "Datos 1m insuficientes."
@@ -125,8 +125,8 @@ class SheilashortLite(BaseStrategy): # Heredar de BaseStrategy
             sl_pct = 0.0
             tp_pct = 0.0
             if not pd.isna(latest_1m["ATR"]):
-                sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
-                tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+                sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close'])
+                tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close'])
             detailed_status["sl_pct"] = sl_pct
             detailed_status["tp_pct"] = tp_pct
 

@@ -42,7 +42,7 @@ class Sabado(BaseStrategy): # Heredar de BaseStrategy
         self.sl_multiplier = config.get("sl_multiplier", 0.8) # Añadido
         self.tp_multiplier = config.get("tp_multiplier", 1.2) # Añadido
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         detailed_status = {
             "data_5m_ok": False,
             "data_1m_ok": False,
@@ -69,7 +69,7 @@ class Sabado(BaseStrategy): # Heredar de BaseStrategy
 
         try:
             # Get 5m klines for downtrend and pullback detection
-            prices_5m = binance_data_provider.get_historical_klines("BTCUSDT", "5m", limit=self.ema_long_period + 50).get("prices", [])
+            prices_5m = trading_bot_instance._get_binance_klines_data("BTCUSDT", "5m", limit=self.ema_long_period + 50).get("prices", [])
             df_5m = normalize_klines(prices_5m, min_length=self.ema_long_period + 5)
             if df_5m.empty:
                 detailed_status["data_5m_ok"] = False
@@ -113,7 +113,7 @@ class Sabado(BaseStrategy): # Heredar de BaseStrategy
                 return {"signal": "HOLD", "message": f"Pullback (Close {latest_5m['close']:.2f} entre EMA{self.ema_short_period} {detailed_status['ema_short_5m']:.2f} y EMA{self.ema_medium_period} {detailed_status['ema_medium_5m']:.2f}): {'✅' if is_pullback else '❌'}", "detailed_status": detailed_status}
 
             # Get 1m klines for confirmation indicators
-            prices_1m = binance_data_provider.get_historical_klines("BTCUSDT", "1m", limit=self.rsi_period + 50).get("prices", [])
+            prices_1m = trading_bot_instance._get_binance_klines_data("BTCUSDT", "1m", limit=self.rsi_period + 50).get("prices", [])
             df_1m = normalize_klines(prices_1m, min_length=self.rsi_period + 5)
             if df_1m.empty:
                 detailed_status["data_1m_ok"] = False

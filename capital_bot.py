@@ -27,6 +27,8 @@ from utils.klines_utils import normalize_klines
 from utils.indicators import add_ema
 from mcp_agent import MCPAgent
 
+from binance_websocket_client import BinanceWebsocketClient
+
 config_lock = threading.Lock()
 
 # Configuración del logger
@@ -423,12 +425,7 @@ class TelegramListener:
             if updates: self._process_updates(updates)
             time.sleep(2)
 
-class BinanceDataProvider:
-    def __init__(self, trading_bot_instance):
-        self.trading_bot = trading_bot_instance
 
-    def get_historical_klines(self, symbol, interval, limit):
-        return self.trading_bot._get_binance_klines_data(symbol, interval, limit)
 
 class TradingBot:
     TRADE_HISTORY_FIELDNAMES = [
@@ -556,8 +553,25 @@ class TradingBot:
             "GabinalongShort": "scalping", # Assuming this is also scalping
             "Guillermoshort": "scalping", # Assuming this is also scalping
         }
-        self.binance_data_update_interval = timedelta(seconds=30)
-        self.cached_binance_klines = {}
+        self.kline_queues = {
+            '1m': queue.Queue(),
+            '5m': queue.Queue(),
+            '30m': queue.Queue()
+        }
+        self.binance_ws_clients = {}
+        self.klines_data = {interval: [] for interval in self.kline_queues.keys()}
+        for interval in self.kline_queues.keys():
+            # Pre-fill with historical data
+            try:
+                initial_klines = self.binance_client_api.get_historical_klines("BTCUSDT", interval, limit=1000).get("prices", [])
+                self.klines_data[interval].extend(initial_klines)
+            except Exception as e:
+                logger.error(f"Error al precargar datos históricos para {interval}: {e}")
+
+            ws_client = BinanceWebsocketClient(symbol="BTCUSDT", interval=interval, data_queue=self.kline_queues[interval])
+            ws_client.start()
+            self.binance_ws_clients[interval] = ws_client
+
         if not os.path.exists(self.trade_history_file):
             with open(self.trade_history_file, "w", newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=self.TRADE_HISTORY_FIELDNAMES)
@@ -1016,20 +1030,29 @@ class TradingBot:
             result_queue.put((None, None))
 
     def _get_binance_klines_data(self, symbol, interval, limit):
-        cache_key = (symbol, interval, limit)
-        cached_data = self.cached_binance_klines.get(cache_key)
-        now = datetime.now()
+        # Get new klines from the queue
+        while not self.kline_queues[interval].empty():
+            kline = self.kline_queues[interval].get()
+            
+            # Convert kline to the same format as historical klines
+            formatted_kline = {
+                "open_time": kline['t'],
+                "open": float(kline['o']),
+                "high": float(kline['h']),
+                "low": float(kline['l']),
+                "close": float(kline['c']),
+                "volume": float(kline['v'])
+            }
 
-        if cached_data and (now - cached_data['last_update']) < self.binance_data_update_interval:
-            return cached_data['data']
-        
-        try:
-            klines_data = self.binance_client_api.get_historical_klines(symbol=symbol, interval=interval, limit=limit)
-            self.cached_binance_klines[cache_key] = {'data': klines_data, 'last_update': now}
-            return klines_data
-        except Exception as e:
-            logger.error(f"ERROR al obtener datos de Binance para {symbol}-{interval}-{limit}: {e}")
-            return {}
+            # Append the new kline to the historical data
+            self.klines_data[interval].append(formatted_kline)
+
+            # Keep the list of klines at a reasonable size
+            if len(self.klines_data[interval]) > 2000:
+                self.klines_data[interval].pop(0)
+
+        # Return the last `limit` klines
+        return {'prices': self.klines_data[interval][-limit:]}
 
     def get_app_status(self):
         if self.running:
@@ -1284,9 +1307,8 @@ class TradingBot:
                     continue
                 
                 preliminary_price = (current_bid + current_offer) / 2
-                binance_data_provider = BinanceDataProvider(self)
 
-                klines_30m = binance_data_provider.get_historical_klines("BTCUSDT", "30m", limit=50).get("prices", [])
+                klines_30m = self._get_binance_klines_data("BTCUSDT", "30m", limit=50).get("prices", [])
                 df_30m = normalize_klines(klines_30m, min_length=30)
                 
                 current_trend = "neutral"
@@ -1314,7 +1336,7 @@ class TradingBot:
                     
                     print(f"DEBUG: Llamando a {name}.run()") # DEBUG PRINT
                     try:
-                        raw_result = instance.run(self.capital_client_api, binance_data_provider)
+                        raw_result = instance.run(self.capital_client_api, self)
                         result = normalize_strategy_result(raw_result)
                         logger.debug(f"Resultado normalizado para {name}: {result}") # Añadido
                         with self.signals_lock:

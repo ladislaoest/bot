@@ -45,7 +45,7 @@ class Guillermoshort(BaseStrategy): # Heredar de BaseStrategy
         # --- Parámetros ajustados por agresividad ---
         self.rsi_sell_threshold = config.get("rsi_sell_threshold", level_params["rsi_sell"])
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         detailed_status = {
             "data_ok": False,
             "trend_ok": False,
@@ -77,7 +77,7 @@ class Guillermoshort(BaseStrategy): # Heredar de BaseStrategy
                 self.atr_period
             ) + 30
 
-            prices = binance_data_provider.get_historical_klines(
+            prices = trading_bot_instance._get_binance_klines_data(
                 symbol, "1m", limit=limit
             ).get("prices", [])
             df = normalize_klines(prices, min_length=limit - 10)

@@ -38,7 +38,7 @@ class GabinalongShort(BaseStrategy): # Heredar de BaseStrategy
         self.sl_multiplier = config.get("sl_multiplier", 1.5) # Añadido
         self.tp_multiplier = config.get("tp_multiplier", 1.0) # Añadido
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         sl_pct = 0.0 # Inicializar
         tp_pct = 0.0 # Inicializar
         detailed_status = {
@@ -66,7 +66,7 @@ class GabinalongShort(BaseStrategy): # Heredar de BaseStrategy
         try:
             # --- 1. OBTENER DATOS ---
             limit_1m = max(self.atr_period, 20, self.macd_slow, self.atr_sma_period) + 50
-            prices_1m = binance_data_provider.get_historical_klines(symbol, "1m", limit=limit_1m).get("prices", [])
+            prices_1m = trading_bot_instance._get_binance_klines_data(symbol, "1m", limit=limit_1m).get("prices", [])
             df_1m = normalize_klines(prices_1m, min_length=limit_1m - 10)
             if df_1m.empty:
                 detailed_status["error"] = "Datos 1m insuficientes."
@@ -81,7 +81,7 @@ class GabinalongShort(BaseStrategy): # Heredar de BaseStrategy
             df_1m["MACD_Signal"] = macd.macd_signal()
             latest_1m = df_1m.iloc[-1]
 
-            daily_klines = binance_data_provider.get_historical_klines(symbol, "1d", limit=2).get("prices", [])
+            daily_klines = trading_bot_instance._get_binance_klines_data(symbol, "1d", limit=2).get("prices", [])
             df_daily = normalize_klines(daily_klines, min_length=1)
             if df_daily.empty:
                 detailed_status["error"] = "Datos diarios insuficientes."
@@ -126,8 +126,8 @@ class GabinalongShort(BaseStrategy): # Heredar de BaseStrategy
 
             # Calcular SL y TP basados en ATR
             if not df_1m.empty and not pd.isna(latest_1m["ATR"]) and latest_1m["ATR"] > 0 and latest_1m['close'] > 0: # Usar ATR de 1m para SL/TP
-                sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
-                tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close']) * 100
+                sl_pct = (self.sl_multiplier * latest_1m["ATR"] / latest_1m['close'])
+                tp_pct = (self.tp_multiplier * latest_1m["ATR"] / latest_1m['close'])
             else:
                 # Si ATR o close son inválidos, usar valores por defecto o de configuración
                 sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto

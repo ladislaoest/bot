@@ -40,7 +40,7 @@ class estrategia1corto(BaseStrategy): # Heredar de BaseStrategy
         self.rsi_sell_threshold = config.get('rsi_sell_threshold', level_params["rsi_sell"])
         self.required_conditions = config.get('required_conditions', level_params["required_conditions"])
 
-    def run(self, capital_client_api, binance_data_provider, symbol="BTCUSDT"):
+    def run(self, capital_client_api, trading_bot_instance, symbol="BTCUSDT"):
         detailed_status = {
             "cond_downtrend_5m": False,
             "cond_pullback_5m": False,
@@ -70,13 +70,13 @@ class estrategia1corto(BaseStrategy): # Heredar de BaseStrategy
         }
         try:
             # --- Timeframes ---
-            prices_5m = binance_data_provider.get_historical_klines("BTCUSDT", "5m", limit=max(self.ema50_period, self.atr_period, self.adx_period) + 50).get("prices", []) # Ajustar límite
+            prices_5m = trading_bot_instance._get_binance_klines_data("BTCUSDT", "5m", limit=max(self.ema50_period, self.atr_period, self.adx_period) + 50).get("prices", []) # Ajustar límite
             df_5m = normalize_klines(prices_5m, min_length=max(self.ema50_period, self.atr_period, self.adx_period) + 5) # Ajustar min_length
             if df_5m.empty:
                 detailed_status["error"] = "Datos 5m insuficientes."
                 return {"signal": "HOLD", "message": "Datos 5m insuficientes.", "detailed_status": detailed_status}
 
-            prices_1m = binance_data_provider.get_historical_klines("BTCUSDT", "1m", limit=self.rsi_period + 50).get("prices", []) # Ajustar límite
+            prices_1m = trading_bot_instance._get_binance_klines_data("BTCUSDT", "1m", limit=self.rsi_period + 50).get("prices", []) # Ajustar límite
             df_1m = normalize_klines(prices_1m, min_length=self.rsi_period + 5) # Ajustar min_length
             if df_1m.empty:
                 detailed_status["error"] = "Datos 1m insuficientes."
@@ -122,8 +122,8 @@ class estrategia1corto(BaseStrategy): # Heredar de BaseStrategy
             sl_pct = 0.0
             tp_pct = 0.0
             if not pd.isna(latest_5m["ATR"]) and latest_5m["ATR"] > 0 and latest_5m['close'] > 0:
-                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
-                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close']) * 100
+                sl_pct = (self.sl_multiplier * latest_5m["ATR"] / latest_5m['close'])
+                tp_pct = (self.tp_multiplier * latest_5m["ATR"] / latest_5m['close'])
             else:
                 # Si ATR o close son inválidos, usar valores por defecto o de configuración
                 sl_pct = self.sl_multiplier * 0.01 # Un valor pequeño por defecto
