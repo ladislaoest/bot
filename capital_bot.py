@@ -1325,23 +1325,30 @@ class TradingBot:
                         elif signal_text.startswith("SELL"): direction = "SELL"
 
                         if direction:
-                            result_queue = queue.Queue()
-                            atr_5m_value = self.strategy_signals[name].get("detailed_status", {}).get("ATR", 0.0)
-                            ai_thread = threading.Thread(target=self.get_ai_sl_tp, args=(result_queue, name, direction, preliminary_price, current_trend, atr_5m_value, self.strategy_types.get(name, "desconocido")))
-                            
-                            try:
-                                sl_multiplier, tp_multiplier = result_queue.get(timeout=10) # 10 second timeout
-                            except queue.Empty:
-                                logger.warning(f"Timeout al esperar la respuesta de la IA para {name}. Usando los valores de config.json")
-                                sl_multiplier, tp_multiplier = None, None
+                            # Intentar obtener sl_pct y tp_pct directamente de la estrategia
+                            sl_pct = result.get("sl_pct")
+                            tp_pct = result.get("tp_pct")
 
-                            if sl_multiplier is None or tp_multiplier is None:
-                                logger.warning(f"No se pudieron obtener los multiplicadores de la IA para {name}. Usando los valores de config.json")
-                                sl_multiplier = instance.sl_multiplier
-                                tp_multiplier = instance.tp_multiplier
+                            # Si la estrategia no proporcionó SL/TP válidos, usar la IA
+                            if sl_pct is None or tp_pct is None or sl_pct == 0.0 or tp_pct == 0.0:
+                                result_queue = queue.Queue()
+                                atr_5m_value = self.strategy_signals[name].get("detailed_status", {}).get("ATR", 0.0)
+                                ai_thread = threading.Thread(target=self.get_ai_sl_tp, args=(result_queue, name, direction, preliminary_price, current_trend, atr_5m_value, self.strategy_types.get(name, "desconocido")))
+                                ai_thread.start()
 
-                            sl_pct = (sl_multiplier * atr_5m_value / preliminary_price) * 100
-                            tp_pct = (tp_multiplier * atr_5m_value / preliminary_price) * 100
+                                try:
+                                    sl_multiplier, tp_multiplier = result_queue.get(timeout=10) # 10 second timeout
+                                except queue.Empty:
+                                    logger.warning(f"Timeout al esperar la respuesta de la IA para {name}. Usando los valores de config.json")
+                                    sl_multiplier, tp_multiplier = None, None
+
+                                if sl_multiplier is None or tp_multiplier is None:
+                                    logger.warning(f"No se pudieron obtener los multiplicadores de la IA para {name}. Usando los valores de config.json")
+                                    sl_multiplier = instance.sl_multiplier
+                                    tp_multiplier = instance.tp_multiplier
+
+                                sl_pct = (sl_multiplier * atr_5m_value / preliminary_price) * 100
+                                tp_pct = (tp_multiplier * atr_5m_value / preliminary_price) * 100
 
                             if sl_pct is None or tp_pct is None or sl_pct == 0.0 or tp_pct == 0.0:
                                 logger.error(f"Estrategia '{name}' devolvió 'sl_pct' o 'tp_pct' inválidos (None o 0.0). Saltando trade.")

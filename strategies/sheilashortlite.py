@@ -133,6 +133,10 @@ class SheilashortLite(BaseStrategy): # Heredar de BaseStrategy
             trigger_conditions = [cond_candle, cond_ema_cross, cond_macd, cond_rsi]
             if sum(trigger_conditions) >= self.required_conditions:
                 entry = latest_1m['close']
+                detailed_status.update({
+                    "sl_pct": sl_pct,
+                    "tp_pct": tp_pct
+                })
                 return {
                     "signal": "SELL",
                     "message": f"Gatillo de venta detectado con {sum(trigger_conditions)}/{len(trigger_conditions)} condiciones.",

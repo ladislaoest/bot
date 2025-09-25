@@ -137,6 +137,10 @@ class SheilalongLite(BaseStrategy): # Heredar de BaseStrategy # Version check: A
                     detailed_status["sl_pct"] = sl_pct
                     detailed_status["tp_pct"] = tp_pct
 
+                    detailed_status.update({
+                        "sl_pct": sl_pct,
+                        "tp_pct": tp_pct
+                    })
                     return {
                         "signal": "BUY",
                         "message": f"Ruptura alcista confirmada con {sum(optional_conditions) + 2}/6 condiciones.",
