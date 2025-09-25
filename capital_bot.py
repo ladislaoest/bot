@@ -1450,8 +1450,6 @@ class TradingBot:
                             self.strategy_signals[name] = {"signal": "ERROR", "message": f"Error: {strategy_e}"}
                     finally:
                         self.opening_trade[name] = False
-                    finally:
-                        self.opening_trade[name] = False
 
             except Exception as e:
                 logger.error(f"ERROR CRÍTICO en el bucle de polling: {e}")
